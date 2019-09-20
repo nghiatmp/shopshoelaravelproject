@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title></title>
+	<link rel="stylesheet" href="">
+</head>
+<body>
+	<a href="http://youtube.com" title="" onclick="return confirm('bạn có muốn đi k')">delete</a>
+	<input required id="img" type="file" name="img" class="form-control hidden" onchange="changeImg(this)" style="display: none">
+	<img id="avatar" class="thumbnail" width="300px" src="images/new_seo-10-512.png">
+
+
+
+
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript">
+		function changeImg(input){
+		    //Nếu như tồn thuộc tính file, đồng nghĩa người dùng đã chọn file mới
+		    if(input.files && input.files[0]){
+		        var reader = new FileReader();
+		        //Sự kiện file đã được load vào website
+		        reader.onload = function(e){
+		            //Thay đổi đường dẫn ảnh
+		            $('#avatar').attr('src',e.target.result);
+		        }
+		        reader.readAsDataURL(input.files[0]);
+		    }
+		}
+		$(document).ready(function() {
+		    $('#avatar').click(function(){
+		        $('#img').click();
+		    });
+		});
+	</script>
+</body>
+</html>

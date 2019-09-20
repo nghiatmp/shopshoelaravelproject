@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>Bootstrap: Collapse panel with radio buttons</title>
+  
+  
+  <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'>
+
+  <style type="text/css" media="screen">
+        ul li{
+          padding: 5px;
+          border: 1px solid black;
+          list-style: none;
+        }
+        .dropdown{
+          display: none;
+          /* position: absolute; */
+        }
+  </style>
+</head>
+
+<body>
+<div class="container">
+  <div class="row">
+       <div class="col-lg-3">
+              <ul>
+                <li class="parent">
+                     giay
+                     <ul class="dropdown">
+                       <li>dep</li>
+                       <li>quan</li>
+                     </ul>
+                </li>
+                <li class="parent">
+                     giay
+                     <ul class="dropdown">
+                       <li>dep</li>
+                       <li>quan</li>
+                     </ul>
+                </li>
+                <li class="parent">
+                     giay
+                     <ul class="dropdown">
+                       <li>dep</li>
+                       <li>quan</li>
+                     </ul>
+                </li>
+
+
+              </ul>
+       </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+   $('.parent').click(function(){
+    
+    $('.dropdown').toggle('show');
+   });
+</script>
+</body>
+
+</html>
