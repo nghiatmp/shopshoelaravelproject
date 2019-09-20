@@ -63,29 +63,16 @@ class ProductController extends Controller
         $product->promotion_price = $req->proprice;
         $product->status= $req->rdoStatus;
         
+        $req->validate([
 
-        if($req->hasFile('images')){
-            $file =$req->file('images');
-            $duoi = $file->getClientOriginalExtension();
-            if($duoi != 'jpg' && $duoi !='png'){
-                return redirect('admin/product/add')->with('loi1','Lỗi File Anh');
-            }
-            $name = $file->getClientOriginalName();
-            $image = str::random(2)."_".$name;
-            while (file_exists('upload/product'.$image)) {
-                $image = str::random(2)."_".$name;
-            }
-            $file->move('upload/product',$image);
+            'images' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
 
-            $product->image= $image;
-            echo  $product->image ;
-        }else{
-           return back()->with('loi','Bạn chưa chọn file ảnh *Bắt Buộc');
-        }
-         echo "aaaaa";
-         
+        ]);
+        $imageName = time().'.'.$req->images->extension();  
+        $req->images->move(public_path('upload/product/'), $imageName);
+        $product->image  = $imageName;
+
         $product->save();
-
         return back()->with('thongbao','Bạn đã thêm product thành công');
     }
     public function edit($id){
@@ -132,21 +119,33 @@ class ProductController extends Controller
         $product->status= $req->rdoStatus;
         
 
+        // if($req->hasFile('images')){
+        //     $file =$req->file('images');
+        //     $duoi = $file->getClientOriginalExtension();
+        //     if($duoi != 'jpg' && $duoi !='png'){
+        //         return redirect('admin/product/add')->with('loi1','Lỗi File Anh');
+        //     }
+        //     $name = $file->getClientOriginalName();
+        //     $image = str::random(2)."-".$name;
+        //     while (file_exists('upload/product'.$image)) {
+        //         $image = str::random(2)."-".$name;
+        //     }
+        //     $file->move('upload/product',$image);
+        //     unlink('upload/product'.$product->$image);
+        //     $product->image= $image;
+        // }
         if($req->hasFile('images')){
-            $file =$req->file('images');
-            $duoi = $file->getClientOriginalExtension();
-            if($duoi != 'jpg' && $duoi !='png'){
-                return redirect('admin/product/add')->with('loi1','Lỗi File Anh');
-            }
-            $name = $file->getClientOriginalName();
-            $image = str::random(2)."-".$name;
-            while (file_exists('upload/product'.$image)) {
-                $image = str::random(2)."-".$name;
-            }
-            $file->move('upload/product',$image);
-            unlink('upload/product'.$product->$image);
-            $product->image= $image;
+            $req->validate([
+
+                'images' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+
+            ]);
+            $imageName = time().'.'.$req->images->extension();  
+            $req->images->move(public_path('upload/product/'), $imageName);
+            $product->image  = $imageName;
         }
+
+         // unlink('upload/product'.$product->$image);
 
         $product->save();
         return back()->with('thongbao','Bạn đã update product thành công');

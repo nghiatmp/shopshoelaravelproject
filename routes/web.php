@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 
-Route::get('test','TestController@test');
+Route::get('test','admin\TestController@test');
 
 Route::group(['prefix'=>'admin'],function(){
 	Route::group(['prefix'=>'product'],function(){
