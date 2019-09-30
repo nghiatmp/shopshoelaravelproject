@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use DB;
 use App\Categories;
 use Illuminate\Support\Str;
@@ -10,7 +11,7 @@ use Illuminate\Support\Str;
 class CategoryController extends Controller
 {
     public function list(){
-    	$data['cate'] = Categories::all();
+    	$data['cate'] = Categories::all()->where('status',1);
     	return view('admin.category.list',$data);
     }
 
@@ -83,5 +84,12 @@ class CategoryController extends Controller
             $data['cate']->save();
         return back()->with('thongbao','Bạn đã update category thành công');
 
+    }
+    public function deletecate($id, Request $request)
+    {
+        $cate = Categories::find($id);
+        $cate->status = 0;
+        $cate->save();
+        return back()->with('thongbao','Bạn đã xóa thành công category');
     }
 }

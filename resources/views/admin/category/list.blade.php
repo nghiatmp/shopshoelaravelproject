@@ -12,6 +12,7 @@
                     </h1>
                 </div>
                 <!-- /.col-lg-12 -->
+                 @include('adminmaster.note')
                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                     <thead>
                         <tr align="center">
@@ -42,7 +43,7 @@
                                 @endif
                             </td>
                             <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="admin/category/edit/{{$cat->id}}">Edit</a></td>
-                            <td class="center"><i class="fa fa-trash-o  fa-fw"></i><a href="#"> Delete</a></td>
+                            <td class="center"><i class="fa fa-trash-o  fa-fw"></i><a href="admin/category/delete/{{$cat->id}}" onclick="return confirm('Are you sure ??')"> Delete</a></td>
                             
                         </tr>
                         @endforeach

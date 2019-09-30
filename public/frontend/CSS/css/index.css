@@ -27,6 +27,7 @@ header .container ul li{
 /* menu--------------------------------------- */
 .menu{
 	background-color: #ABC9E2;
+    height: 60px;
 
 }
 .fixNav {
@@ -43,7 +44,9 @@ header .container ul li{
 	display: inline-block;
     padding: 7px 12px;      
 	font-size: 20px;
-    position: relative
+    position: relative;
+    line-height: 44px;
+    font-size: 24px;
 }
 .menu .container ul li a{
 	color: black;
@@ -57,11 +60,12 @@ header .container ul li{
 }
 .menu .container ul li ul.dropdown li{
     display: block;
-    padding: 20px 15px;
+    padding: 0px 15px;
     border-bottom: 1px dotted gray;
 }
 .menu .container ul li ul.dropdown li a{
     padding-left: 20px;
+    font-size: 17px;
 }
 .menu .container ul li:hover > ul.dropdown{
     display: block;
@@ -116,7 +120,7 @@ header .container ul li{
 /* endleft------------------------------ */
 /* right */
 .product:hover{
-    transform: scale(1.1,1.1);
+    transform: scale(1.0,1.05);
 }
 .flash-del{
 	text-decoration: line-through;
@@ -131,7 +135,7 @@ header .container ul li{
 	overflow: hidden;
 }
 .single-item img:hover{
-transform: scale(1.4,1.4);
+transform: scale(1.2,1.2);
 }
   .ribbon-wrapper {
     width: 85px;
@@ -191,7 +195,7 @@ transform: scale(1.4,1.4);
     margin: 0px 10px;
 }
 .thuonghieu img:hover{
-    transform: scale(1.4,1.4);
+    transform: scale(1.2,1.2);
 }
 /*  end css thuong hieu*/
 

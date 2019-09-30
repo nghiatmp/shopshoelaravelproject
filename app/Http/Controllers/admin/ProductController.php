@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use DB;
 use App\Product;
 use Illuminate\Support\Str;
@@ -149,5 +150,16 @@ class ProductController extends Controller
 
         $product->save();
         return back()->with('thongbao','Bạn đã update product thành công');
+    }
+
+
+    public function deleteproduct($id, Request $request)
+    {
+       $product = Product::find($id);
+
+       $product->status = 0;
+       $product->save();
+       return back()->with('thongbao','Bạn đã xóa product thành công');
+
     }
 }

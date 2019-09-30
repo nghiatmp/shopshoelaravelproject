@@ -18,7 +18,7 @@ Route::get('/', function () {
 
 Route::get('test','admin\TestController@test');
 
-Route::group(['prefix'=>'admin'],function(){
+Route::group(['prefix'=>'admin','namespace'=>'admin','middleware'=>'adminlogin'],function(){
 	Route::group(['prefix'=>'product'],function(){
 		Route::get('list','ProductController@listproduct')->name('productlist');
 		Route::get('detail/{id}','ProductController@detailproduct')->name('detailproduct');
@@ -26,6 +26,7 @@ Route::group(['prefix'=>'admin'],function(){
 		Route::post('add','ProductController@postadd')->name('postaddproduct');
 		Route::get('edit/{id}','ProductController@edit')->name('editproduct');
 		Route::post('edit/{id}','ProductController@postedit')->name('posteditproduct');
+		Route::get('delete/{id}','ProductController@deleteproduct')->name('deleteproduct');
 	});
 
 	Route::group(['prefix'=>'ajax'],function(){
@@ -39,5 +40,33 @@ Route::group(['prefix'=>'admin'],function(){
 
 		Route::get('edit/{id}','CategoryController@edit')->name('categoryedit');
 		Route::post('edit/{id}','CategoryController@postedit');
+		Route::get('delete/{id}','CategoryController@deletecate')->name('deletecate');
 	});
+
+	Route::group(['prefix'=>'user'],function(){
+		Route::get('list','UserController@list')->name('userlist');
+
+		Route::get('add','UserController@add')->name('useradd');
+		Route::post('add','UserController@postadd')->name('userpostadd');
+
+		Route::get('edit/{id}','UserController@edit')->name('useredit');
+		Route::post('edit/{id}','UserController@postedit')->name('userpostedit');
+		Route::get('delete/{id}','UserController@delete')->name('userdelete');
+
+	});
+	
 });
+
+
+Route::get('admin/login','admin\UserController@login')->name('login');
+Route::post('admin/login','admin\UserController@postlogin')->name('postlogin');
+Route::get('admin/logout','admin\UserController@logout')->name('logout');
+
+
+//////frontend
+Route::get('/index','page\PageController@index')->name('page.index');
+Route::post('/login','page\PageController@postlogin')->name('page.postlogin');
+Route::get('logout','page\PageController@logout')->name('page.logout');
+Route::get('contact','page\PageController@contact')->name('page.contact');
+Route::get('detailcate/{id}','page\PageController@detailcate')->name('page.detailcate');
+Route::get('detailproduct/{id}','page\PageController@detailproduct')->name('page.detailproduct');

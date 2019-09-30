@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Product;
+use App\Size;
 
 class TestController extends Controller
 {
+    //
     public function test(){
-    	return "hello";
+    	$data = Product::take(6)->get();
+    	dd($data);
     }
 }
