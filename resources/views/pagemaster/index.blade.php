@@ -34,11 +34,10 @@
 				
 				<ul>
 					<li>
-					<a  href="Javascrip:voice(0);"
-		          		data-toggle="modal" data-target="#ModalLogIn">Đăng Nhập</a>
+					<a  href="{{ route('page.getlogin') }}">Đăng Nhập</a>
 					</li>
 					<li>
-						<a href="Javascrip:voice(0);" title="" data-toggle="modal" data-target="#ModalRester">Đăng Kí</a>
+						<a href="{{ route('page.getregister') }}">Đăng Kí</a>
 					</li>
 					
 				</ul>

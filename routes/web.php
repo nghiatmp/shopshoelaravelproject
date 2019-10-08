@@ -65,7 +65,13 @@ Route::get('admin/logout','admin\UserController@logout')->name('logout');
 
 //////frontend
 Route::get('/index','page\PageController@index')->name('page.index');
+
+Route::get('/login','page\PageController@getlogin')->name('page.getlogin');
 Route::post('/login','page\PageController@postlogin')->name('page.postlogin');
+
+Route::get('/register','page\PageController@getregister')->name('page.getregister');
+Route::post('/register','page\PageController@postregister')->name('page.postregister');
+
 Route::get('logout','page\PageController@logout')->name('page.logout');
 Route::get('contact','page\PageController@contact')->name('page.contact');
 Route::get('detailcate/{id}','page\PageController@detailcate')->name('page.detailcate');
