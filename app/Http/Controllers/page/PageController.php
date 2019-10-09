@@ -11,6 +11,7 @@ use App\Categories;
 use DB;
 use Illuminate\Support\Facades\View;
 use App\User;
+use Cart;
 class PageController extends Controller
 {
 
@@ -18,6 +19,14 @@ class PageController extends Controller
         
         $data['cates'] = Categories::Where([['status',1],['id_parent',0]])->get();
         $data['catechild'] = Categories::Where([['status',1],['id_parent','<>',0]])->get();
+         if(Auth::check()){
+             $iduser = Auth::user()->id;
+        }else{
+             $iduser =-1;
+        }
+        $data['carts']=Cart::session($iduser)->getContent();
+        $data['cartscount']=$data['carts']->count();
+         // dd($data['carts']);
         view::share($data);
     }
     public function index()
@@ -133,5 +142,81 @@ class PageController extends Controller
 
     public function contact(){
         return view('pages.contact');
+    }
+
+    public function cart(){
+        return view('pages.cart');
+    }
+
+    public function postorder(Request $request){
+        // dd($request->all());
+        $validator = Validator::make($request->all(), [
+           'quantity'=>'required',
+           'size'=>'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('detailproduct/'.$request->idpro)
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
+        return redirect('orderproduct/'.$request->idpro .'/'.$request->size.'/'.$request->quantity);
+    }
+
+
+    public function orderproduct($idpro,$idsize,$quantity){
+        // $product = DB::table('detail_product as a')->leftjoin('size_product as b','a.id_size','=','b.id')->join('product as c','c.id', '=', 'a.id_product')->select('a.*','a.id as id_detail','b.size','c.name','c.id as idproduct','c.*')
+        // ->where(['a.id_product'=>$idpro,'a.id_size'=>$idsize])->first();
+         $product = DB::table('detail_product as a')->leftjoin('size_product as b','a.id_size','=','b.id')->join('product as c','c.id', '=', 'a.id_product')->select('a.*','a.id as id_detail','b.size','c.name','c.id as idproduct','c.*')
+        ->where([['a.id_product',$idpro],['a.id_size',$idsize ]])->first();
+        if($product->quanlity > $quantity){
+            if(Auth::check()){
+             $iduser = Auth::user()->id;
+            }else{
+                 $iduser =-1;
+            }
+            $price = $product->promotion_price == 0 ?  $product->unit_price : $product->promotion_price;
+            Cart::session($iduser)
+            ->add([
+                'id' => $product->id_detail,
+                'name' => $product->name,
+                'quantity' => $quantity,
+                'price' => $price,
+                'attributes'=>[
+                        'image'=>$product->image,
+                        'size' =>$product->size,
+                    ]
+            ]);
+
+            $data['carts'] = Cart::getContent();
+            return redirect(route('page.cartshop'));
+        }else{
+            return redirect('detailproduct/'.$idpro)->with('thongbao','Sản Phẩm Không Đủ Số Lượng. Xin Giam Số Lượng');
+        }
+        
+    }
+
+    public function cartshop()
+    {
+        if(Auth::check()){
+             $iduser = Auth::user()->id;
+        }else{
+             $iduser =-1;
+        }
+        $data['carts'] = Cart::session($iduser)->getContent();
+        $data['Total'] = Cart::session($iduser)->getTotal();
+        return view('pages.cart',$data);
+    }
+    public function deletecart($id){
+        if(Auth::check()){
+             $iduser = Auth::user()->id;
+        }else{
+             $iduser =-1;
+        }
+        Cart::session($iduser)->remove($id);
+        return redirect(route('page.cartshop'));
+
+
     }
 }

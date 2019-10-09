@@ -5,7 +5,7 @@
 			<div class="pull-left auto-width-left">
 				<ul class="top-menu menu-beta l-inline"> 
 					<li>
-						<a href="" title=""><i class="fa fa-home" aria-hidden="true"></i> Yên Lâm - Yên Mô - Ninh Bình</a>
+						<a href="" title=""><i class="fa fa-home" aria-hidden="true"></i> Số 3-Cầu Giấy-Hà Nội</a>
 					</li>
 					<li>
 						<a href="" title=""><i class="fa fa-phone-square" aria-hidden="true"></i> 0355294422</a>
@@ -58,7 +58,7 @@
 				</div>
 					
 				<div class="beta-select cart">
-					<a href="cartshop.html" title=""><i style="font-size: 30px; margin-right: 5px" class="fa fa-shopping-cart"></i> Giỏ hàng (Trống)</a>
+					<a href="{{ route('page.cartshop') }}" title=""><i style="font-size: 30px; margin-right: 5px" class="fa fa-shopping-cart"></i> Giỏ hàng ({{$cartscount}})</a>
 				</div>
 
 			</div>

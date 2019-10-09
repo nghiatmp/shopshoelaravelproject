@@ -5,6 +5,8 @@
 @section('content')
 	<div class="content mt-5">
 		<div class="container">
+			@include('pagemaster.error')
+			@include('pagemaster.note')
 			<div class="row">
 				<div class="col-lg-5">
 					<img id="imgproduct" src="upload/product/{{ $product->image }}" alt="" width="350px">
@@ -37,22 +39,26 @@
 					<p class="text-info"> <i class="fa fa-phone" aria-hidden="true"></i> Hotline : 0901088779 ( Imess/Zalo/Viber/WhatsApp )</p>
 					<h5 class="mt-3"> <i class="fa fa-hand-o-right" style="font-size: 25px" aria-hidden="true"></i> NHẬN BỎ SỈ SỐ LƯỢNG LỚN TẤT CẢ CÁC MẶT HÀNG - ĐẢM BẢO GIÁ TỐT NHẤT THỊ TRƯỜNG</h5>
 					<div class="mt-5">
-						<form class="form-group" style="width:30%">
-						      
-						      <label for="">Size</label>
-						      <select name="" class="form-control">
+						
+						<form class="form-group" style="width:30%"  action=" {{ route('page.order') }}" method="POST">
+						    @csrf  
+
+						    <label for="">Size</label>
+						    <select name="size" class="form-control">
 						      	<option value="">--- Chọn Kích Cỡ ---</option>
 								@foreach($detailproducts as $dp)
 						      		<option value="{{ $dp->id_size }}">{{ $dp->size }}</option>
 						      	@endforeach
-						      </select>
-						      <label for="">Số Lượng</label>
-						      <input type="number" name="" value="1" class="form-control">
+						    </select>
+						    <label for="">Số Lượng</label>
+						    <input type="number" name="quantity"class="form-control" value="1">
+						    <input type="hidden" name="idpro" value="{{ $product->id }}">
+						    <div class="mt-5">
+								<input type="submit" name="" class="btn btn-primary mb-5" value="Thêm Vào Giỏ Hàng">
+								<input type="submit" name="" class="btn btn-primary" value="Đặt Hàng">
+							</div>								
 						</form>
-						<div>
-							<input type="submit" name="" class="btn btn-primary" value="Thêm Vào Giỏ Hàng">
-							<input type="submit" name="" class="btn btn-primary" value="Đặt Hàng">
-						</div>
+						
 					</div>
                     
 				</div>

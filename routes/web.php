@@ -76,3 +76,12 @@ Route::get('logout','page\PageController@logout')->name('page.logout');
 Route::get('contact','page\PageController@contact')->name('page.contact');
 Route::get('detailcate/{id}','page\PageController@detailcate')->name('page.detailcate');
 Route::get('detailproduct/{id}','page\PageController@detailproduct')->name('page.detailproduct');
+
+
+// cart
+	Route::get('cart','page\PageController@cart')->name('page.cart');
+	Route::post('order','page\PageController@postorder')->name('page.order');
+	Route::get('orderproduct/{idpro}/{idsize}/{quantity}','page\PageController@orderproduct')->name('page.ordercart');
+	Route::get('cartshop','page\PageController@cartshop')->name('page.cartshop');
+
+	Route::get('deletecart/{id}','page\PageController@deletecart')->name('page.deletecart');
