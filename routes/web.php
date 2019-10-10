@@ -85,3 +85,6 @@ Route::get('detailproduct/{id}','page\PageController@detailproduct')->name('page
 	Route::get('cartshop','page\PageController@cartshop')->name('page.cartshop');
 
 	Route::get('deletecart/{id}','page\PageController@deletecart')->name('page.deletecart');
+
+	// giao dien dat hang
+	Route::get('order','page\PageController@order')->name('page.order');

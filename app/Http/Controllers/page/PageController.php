@@ -219,4 +219,25 @@ class PageController extends Controller
 
 
     }
+
+
+    public function order(){
+        
+        if(Auth::check()){
+            
+            $iduser = Auth::user()->id;
+            $data['carts'] = Cart::session($iduser)->getContent();
+            $data['Total'] = Cart::session($iduser)->getTotal();
+            if($data['Total'] != 0){
+                return view('pages.order',$data);
+            }else{
+                return redirect(route('page.cartshop'))->with('thongbao','Giỏ hàng của bạn đang trống');
+                }
+           
+        }else{
+           
+            return redirect(route('page.cartshop'))->with('thongbao','Hãy đăng nhập để đặt hàng');
+        }
+        
+    }
 }

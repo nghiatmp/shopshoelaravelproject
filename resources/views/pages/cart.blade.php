@@ -4,6 +4,7 @@
 @section('content')
 <div class="content mt-5">
 		<div class="container">
+			@include('pagemaster.note')
 			<table class="table table-hover table-cart" style="text-align: center;">
 			<thead>
 				<tr>
@@ -11,7 +12,7 @@
 				    <th>Tên Sản Phẩm</th>
 				    <th>Số Lượng</th>
 				    <th>Size</th>
-				    <th>Action</th>
+				    <th width="15%">Action</th>
 				    <th>Giá Tiền</th>
 				    <th>Tổng Tiền</th>
 				</tr>
@@ -40,16 +41,22 @@
 				@endif
 			
 			</tbody>
-			<tfoot style="font-size: 22px;">
+			<tfoot style="font-size: 20px;">
 				<tr>
-					<td colspan="5" rowspan="" headers="" >Tổng Tiền Giỏ Hàng</td>
-					<td colspan="" rowspan="" headers="">{{ number_format($Total ,0 ,'.' ,'.').' Đ' }}</td>
+					<td colspan="4" rowspan="" headers="" >Tổng Tiền Giỏ Hàng</td>
+					<td > 
+						@if(isset($Total))
+					 	{{ number_format($Total ,0 ,'.' ,'.').' Đ' }}
+					 	@else
+					 	{{ '0 VND' }}
+					 	@endif
+					</td>
 				</tr>
 			</tfoot>
 		</table>
 		<div>
 			<a href="{{ route('page.index') }}" title="" class="btn btn-primary">Tiếp Tục Mua Sắm</a>
-			<a href="dathang.html" title="" class="btn btn-success">Đặt Hàng</a>
+			<a href="{{ route('page.order') }}" title="" class="btn btn-success">Đặt Hàng</a>
 		</div>
 		</div>
 	</div>

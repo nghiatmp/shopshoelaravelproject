@@ -68,7 +68,7 @@
 							</p>
 						</div>
 						<div class="single-item-caption">
-							<a class="add-to-cart pull-left" href="cartshop.html"><i class="fa fa-shopping-cart" aria-hidden="true" style="font-size: 50px; margin-left: 5px"></i></a>
+							<a class="add-to-cart pull-left" href="detailproduct/{{ $sale->id }}"><i class="fa fa-shopping-cart" aria-hidden="true" style="font-size: 50px; margin-left: 5px"></i></a>
 							<a style="background-color: #3A5C83; font-size: 18px; margin-left: 18px;" class="btn btn-success" href="detailproduct/{{ $sale->id }}"> Details <i style="font-size: 20px; margin-left: 10px;margin-top:6px" class="fa fa-angle-double-right" aria-hidden="true"></i></a>
 							<div class="clearfix"></div>
 						</div>
@@ -109,7 +109,7 @@
 							</p>
 						</div>
 						<div class="single-item-caption">
-							<a class="add-to-cart pull-left" href="cartshop.html"><i class="fa fa-shopping-cart" aria-hidden="true" style="font-size: 50px; margin-left: 5px"></i></a>
+							<a class="add-to-cart pull-left" href="detailproduct/{{ $product->id }}"><i class="fa fa-shopping-cart" aria-hidden="true" style="font-size: 50px; margin-left: 5px"></i></a>
 							<a style="background-color: #3A5C83; font-size: 18px; margin-left: 18px;" class="btn btn-success" href="detailproduct/{{ $product->id }}"> Details <i style="font-size: 20px; margin-left: 10px;margin-top:6px" class="fa fa-angle-double-right" aria-hidden="true"></i></a>
 							<div class="clearfix"></div>
 						</div>
