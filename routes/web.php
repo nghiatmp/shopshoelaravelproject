@@ -54,6 +54,11 @@ Route::group(['prefix'=>'admin','namespace'=>'admin','middleware'=>'adminlogin']
 		Route::get('delete/{id}','UserController@delete')->name('userdelete');
 
 	});
+
+	Route::group(['prefix'=>'billex'],function(){
+		Route::get('list','BillExportController@list')->name('billex-list');
+		Route::get('detailbillex/{id}','BillExportController@detailbillex')->name('detailbillex');
+	});
 	
 });
 
@@ -77,6 +82,10 @@ Route::get('contact','page\PageController@contact')->name('page.contact');
 Route::get('detailcate/{id}','page\PageController@detailcate')->name('page.detailcate');
 Route::get('detailproduct/{id}','page\PageController@detailproduct')->name('page.detailproduct');
 
+// theo doi don hang
+Route::get('inforoder','page\PageController@inforoder')->name('page.inforoder');
+Route::get('detail-infor-order','page\PageController@detailinfororder')->name('page.detailinfororder');
+
 
 // cart
 	Route::get('cart','page\PageController@cart')->name('page.cart');
@@ -88,3 +97,6 @@ Route::get('detailproduct/{id}','page\PageController@detailproduct')->name('page
 
 	// giao dien dat hang
 	Route::get('order','page\PageController@order')->name('page.order');
+
+	//dat hang
+	Route::post('make-bill','page\PageController@makebill')->name('make-bill');

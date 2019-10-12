@@ -312,3 +312,19 @@ opacity: .5;
     font-family: "UVF-ProductSans-Regular","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 /* end chi tiet sp */
+
+/* theo doi don hang */
+#tablebill2 th{
+    text-align: center;
+}
+/* end chi tiet sp */
+/* Table Bill */
+#tablebill{
+    font-size: 15px;
+    margin: 60px 15px
+}
+#tablebill td{
+    padding: 12px 50px;
+}
+
+/* end theo doi don hang */

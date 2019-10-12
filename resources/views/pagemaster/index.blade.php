@@ -17,7 +17,17 @@
 				
 				<ul>
 					<li>
-						<a href="" title=""><i class="fa fa-user" aria-hidden="true"></i> {{ Auth::user()->fullname }}</a>
+						
+						<div class="dropdown">
+						  
+						     <a href="" title="" class="dropdown-toggle" data-toggle="dropdown"	><i class="fa fa-user" aria-hidden="true" ></i> {{ Auth::user()->fullname }}</a>
+					
+
+						    <div class="dropdown-menu">
+							      <a class="dropdown-item" href="#">Sửa Thông Tin</a>
+							      <a class="dropdown-item" href="{{ route('page.inforoder') }}">Theo Dõi Đơn Hàng</a>
+							</div>
+						  </div>
 					</li>
 					
 					<li>
@@ -58,7 +68,7 @@
 				</div>
 					
 				<div class="beta-select cart">
-					<a href="{{ route('page.cartshop') }}" title=""><i style="font-size: 30px; margin-right: 5px" class="fa fa-shopping-cart"></i> Giỏ hàng ({{$cartscount}})</a>
+					<a href="{{ route('page.cartshop') }}" title=""><i style="font-size: 30px; margin-right: 5px" class="fa fa-shopping-cart"></i> Giỏ hàng </a>
 				</div>
 
 			</div>
@@ -77,8 +87,8 @@
 
 
 	
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> --}}
+  {{-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script> --}}
 <!-- <script type="text/javascript" src="CSS/css/bootstrap.min.js"></script>
 <script type="text/javascript" src="CSS/css/jquery-3.3.1.slim.min.js"></script>
 <script type="text/javascript" src="CSS/css/popper.min.js"></script> -->

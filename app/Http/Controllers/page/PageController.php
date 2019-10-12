@@ -12,6 +12,12 @@ use DB;
 use Illuminate\Support\Facades\View;
 use App\User;
 use Cart;
+use App\BillExport;
+use App\DetailBillExport;
+use App\Http\Requests\page\StoreMakeBill;
+use App\Http\Requests\page\StoreRegisterPage;
+use App\Http\Requests\page\StoreLoginPage;
+use App\Http\Requests\page\StorePostOrderPage;
 class PageController extends Controller
 {
 
@@ -19,13 +25,13 @@ class PageController extends Controller
         
         $data['cates'] = Categories::Where([['status',1],['id_parent',0]])->get();
         $data['catechild'] = Categories::Where([['status',1],['id_parent','<>',0]])->get();
-         if(Auth::check()){
-             $iduser = Auth::user()->id;
-        }else{
-             $iduser =-1;
-        }
-        $data['carts']=Cart::session($iduser)->getContent();
-        $data['cartscount']=$data['carts']->count();
+        // if(Auth::check()){
+        //      $iduser = Auth::user()->id;
+        // }else{
+        //      $iduser =-1;
+        // }
+        // $data['carts']=Cart::session($iduser)->getContent();
+        // $data['cartscount']=$data['carts']->count();
          // dd($data['carts']);
         view::share($data);
     }
@@ -41,20 +47,7 @@ class PageController extends Controller
         return view ('pages.login');
     }
    
-    public function postlogin(Request $request){
-        $validator = Validator::make($request->all(), [
-           'email'=>'required|email',
-           'pass'=>'required|min:6|max:10',
-           
-          
-        ]);
-
-        if ($validator->fails()) {
-            return redirect(route('page.getlogin'))
-                        ->withErrors($validator)
-                        ->withInput();
-        }
-
+    public function postlogin(StoreLoginPage $request){
         if(Auth::attempt(['email'=> $request->email,'password'=>$request->pass])){
             return redirect()->route('page.index');
         }else{
@@ -66,22 +59,7 @@ class PageController extends Controller
         return view('pages.register');
     }
 
-    public function postregister(Request $request){
-        $validator = Validator::make($request->all(), [
-           'name'=>'required|min:3|max:100|unique:users,fullname',
-           'pass'=>'required|min:6|max:10',
-           'passAgain'=>'required|same:pass',
-           'birthday'=>'required',
-           'email'=>'required|email|unique:users,email', 
-           'phone'=>'numeric|required',
-           'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect(route('page.getregister'))
-                        ->withErrors($validator)
-                        ->withInput();
-        }
+    public function postregister(StoreRegisterPage $request){
 
         $user = new User;
         $user->fullname = $request->name;
@@ -148,29 +126,23 @@ class PageController extends Controller
         return view('pages.cart');
     }
 
-    public function postorder(Request $request){
-        // dd($request->all());
-        $validator = Validator::make($request->all(), [
-           'quantity'=>'required',
-           'size'=>'required',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect('detailproduct/'.$request->idpro)
-                        ->withErrors($validator)
-                        ->withInput();
-        }
+    public function postorder(StorePostOrderPage $request){
 
         return redirect('orderproduct/'.$request->idpro .'/'.$request->size.'/'.$request->quantity);
     }
 
+    public function inforoder(){
+        return view('pages.infororder');
+    }
+    public function detailinfororder(){
+        return view('pages.detail-infor-order');
+    }
+
 
     public function orderproduct($idpro,$idsize,$quantity){
-        // $product = DB::table('detail_product as a')->leftjoin('size_product as b','a.id_size','=','b.id')->join('product as c','c.id', '=', 'a.id_product')->select('a.*','a.id as id_detail','b.size','c.name','c.id as idproduct','c.*')
-        // ->where(['a.id_product'=>$idpro,'a.id_size'=>$idsize])->first();
          $product = DB::table('detail_product as a')->leftjoin('size_product as b','a.id_size','=','b.id')->join('product as c','c.id', '=', 'a.id_product')->select('a.*','a.id as id_detail','b.size','c.name','c.id as idproduct','c.*')
         ->where([['a.id_product',$idpro],['a.id_size',$idsize ]])->first();
-        if($product->quanlity > $quantity){
+        if($product->quanlity >= $quantity){
             if(Auth::check()){
              $iduser = Auth::user()->id;
             }else{
@@ -240,4 +212,64 @@ class PageController extends Controller
         }
         
     }
+
+    public function makebill(StoreMakeBill $request)
+    {
+
+        $iduser = Auth::user()->id;
+        $carts = Cart::session($iduser)->getContent();
+        $Total = Cart::session($iduser)->getTotal();
+
+
+        foreach ($carts as $cart) {
+           // $id_detail = $cart['id'];
+            $product = DB::table('detail_product as a')->leftjoin('size_product as b','a.id_size','=','b.id')->join('product as c','c.id', '=', 'a.id_product')->select('a.*','a.id as id_detail','b.size','c.name','c.id as idproduct','c.*')
+             ->where('a.id',$cart['id'])->first();
+             if($cart['quantity'] > $product->quanlity){
+                return redirect(route('page.order'))->with('thongbao','Số lượng sản phẩm k đáp ứng đủ, Xin giảm số lượng');
+             }
+
+        }
+
+       
+        $billex = new BillExport;
+        $billex->id_user = $iduser;
+        $billex->phone = $request->phone;
+        $billex->totalmoney=$Total;
+        $billex->payment = $request->thanhtoan;
+        $billex->note = $request->note;
+        $billex->status= 0;
+        $billex->address = $request->address;
+
+        $billex->save();
+
+
+        // detailbillex
+        foreach ($carts as $cart) {
+            $product = DB::table('detail_product as a')->leftjoin('size_product as b','a.id_size','=','b.id')->join('product as c','c.id', '=', 'a.id_product')->select('a.*','a.id as id_detail','b.size','c.name','c.id as idproduct','c.*')
+             ->where('a.id',$cart['id'])->first();
+
+                $detailbillex = new DetailBillExport;
+                $detailbillex->id_bill_export =  $billex->id;
+                $detailbillex->id_detail_product= $cart['id'];
+                $detailbillex->quanlity=$cart['quantity'];
+                $detailbillex->price =$cart['price'];
+
+
+                $detailbillex->save();
+
+                // $product->quanlity = ( $product->quanlity ) - ( $cart['quantity']);
+                 $quan = ( $product->quanlity ) - ( $cart['quantity']);
+                DB::table('detail_product as a')->leftjoin('size_product as b','a.id_size','=','b.id')->join('product as c','c.id', '=', 'a.id_product')->select('a.*','a.id as id_detail','b.size','c.name','c.id as idproduct','c.*')
+                ->where('a.id',$cart['id'])->update(['quanlity'=>$quan]);
+
+                Cart::session(Auth::user()->id)->remove($cart['id']);
+            
+        }
+        return redirect(route('page.order'))->with('thongbao','Đặt hàng Thành Công');
+
+
+    }
+
+
 }

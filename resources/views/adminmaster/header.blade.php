@@ -109,6 +109,19 @@
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
+                            <a href="#"><i class="fa fa-cube fa-fw"></i> Bill Export<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{ route('billex-list') }}">List Bill</a>
+                                </li>
+                               {{--  <li>
+                                    <a href="{{route('addproduct')}}">Add Product</a> 
+                                    
+                                </li> --}}
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
                             <a href="#"><i class="fa fa-users fa-fw"></i> User<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>

@@ -5,7 +5,9 @@
 @section('content')
 	<div class="content">
 		<div class="container">
+			@include('pagemaster.error')
 			<div class="row">
+
 				<div class="col-lg-6">
 					<div>
 						<h3 class="mt-5 mb-5"> Đơn Hàng Của Bạn </h3>
@@ -28,7 +30,13 @@
 							<h4 class="ml-5"> {{ number_format($Total ,0 ,'.' ,'.').' Đ' }} </h4>
 						</div>
 
-					<div  style="border-top: 1px dotted gray;">
+					
+				</div>
+
+				<div class="col-lg-6 mt-5">
+					<form action="{{ route('make-bill') }}" method="POST">
+						@csrf
+						<div  style="border-top: 1px dotted gray;">
 						<h3 class="mt-3 mb-3">Hình Thức Thanh Toán</h3>
 					</div>
 					<div style="border-bottom: 1px dotted gray;">
@@ -47,24 +55,22 @@
 						    </div>
 
 					</div>
-				</div>
-				<div class="col-lg-6 mt-5">
 					<h3>Thông Tin Khách Hàng</h3>
 					<div class="mt-5">
-						<form class="form-group">
 							<label for="">Họ Và Tên :</label>
-							<input type="text" name="" class="form-control">
+							<input type="text" name="username" class="form-control">
 							<label for="">Email :</label>
-							<input type="email" name="" class="form-control">
+							<input type="text" name="email" class="form-control">
 							<label for="">Số Điện Thoại:</label>
-							<input type="text" name="" class="form-control">
+							<input type="text" name="phone" class="form-control">
 							<label for="">Địa Chỉ Nhận Hàng :</label>
-							<input type="text" name="" class="form-control">
+							<input type="text" name="address" class="form-control">
 							<label for="">Yêu Cầu, Ghi Chú :</label>
-							<textarea name="" class="form-control"></textarea>
-						</form>
+							<textarea name="note" class="form-control"></textarea>
 						<button type="submit" class="btn btn-primary">Hoàn Tất Đặt Hàng</button>
 					</div>
+					</form>
+					
 							
 				</div>
 
