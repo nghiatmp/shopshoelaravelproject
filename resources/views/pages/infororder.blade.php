@@ -1,3 +1,5 @@
+
+
 @extends('pagemaster.index')
 
 @section('title','inforoder')
@@ -24,20 +26,26 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-	                <td>01</td>
-	                <td>Lê Minh Nghĩa</td>
-	                <td>20000</td>
-	                <td>Đang Đợi Duyệt</td>
-	                <td>
-	                	<a href="{{ route('page.detailinfororder') }} ">Xem Chi Tiết</a>
-	                </td>
-	                <td >
-	                	<a href="" class="btn btn-danger">Hủy Đơn Hàng</a>
-	                </td>
+				@foreach($billexs as $billex)
+					<tr>
+		                <td>{{ $billex->id }}</td>
+		                <td>{{ $billex->nameCusromer }}</td>
+		                <td>{{ $billex->totalmoney }}</td>
+		                <td>{{ $billex->status == 0 ? "Đang Đợi Duyệt" : "Đã Duyệt"}}</td>
+		                <td>
+		                	<a href="detail-infor-order/{{$billex->id }}">Xem Chi Tiết</a>
+		                </td>
+		                <td >
+		                	<a href="" class="btn btn-danger">Hủy Đơn Hàng</a>
+		                </td>
+		            </tr>
+		        @endforeach
 			</tbody>
 		</table>
 		</div>
 	</div>
-
 @endsection
+
+
+
+

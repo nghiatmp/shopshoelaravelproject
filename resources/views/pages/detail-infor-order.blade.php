@@ -3,7 +3,7 @@
 @section('title','detail-inforoder')
 	
 @section('content')
-
+@if ( $detailbillex ->count() > 0)
 <div class="content mt-5">
 		<div class="row">
 			<div class="container">
@@ -12,19 +12,19 @@
 			<table class="table" id="tablebill">
 					<tr>
 						<td>Mã Hóa Đơn</td>
-						<td>01</td>
+						<td>{{ $billex->id }}</td>
 					</tr> 	
 					<tr>
 						<td>Khách Hàng</td>
-						<td>Lê Minh Nghĩa</td>
+						<td>{{ $billex->nameCusromer }}</td>
 					</tr>
 					<tr>
 						<td>Số Điện Thoại</td>
-						<td > 0929550594</td>
+						<td > {{ $billex->phone }}</td>
 					</tr>
 					<tr>
 						<td>Địa Chỉ</td>
-						<td>Keangame- Hà Nội</td>
+						<td>{{ $billex->address }}</td>
 					</tr>
 			</table>
 		</div>
@@ -41,25 +41,29 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-	                <td>
-	                	Giày Balenciaga
-	                </td>
-	                <td>42</td>
-	                <td>2</td>
-	                <td>$15</td>
-	                <td>$15</td>
-	   
-				
+				@foreach($detailbillex as $db)
+					<tr>
+		                <td>
+		                	{{ $db->name }}	
+		                </td>
+		                <td>{{ $db->size }}</td>
+		                <td>{{ $db->quanlity }}</td>
+		                <td>{{ $db->price }}</td>
+		                <td>{{ $db->quanlity*$db->price }}</td>
+		   			</tr>
+				@endforeach
 
 			</tbody>
 			<tfoot style="font-size: 15px;">
 				<tr>
 					<td colspan="2">Tổng Tiền Hóa Đơn</td>
-					<td>$15</td>
+					<td>{{ $billex->totalmoney }}</td>
 				</tr>
 			</tfoot>
 		</table>
 		</div>
 	</div>
+@else
+	<h2 class="text-center text-danger">Lỗi</h2>
+@endif
 @endsection

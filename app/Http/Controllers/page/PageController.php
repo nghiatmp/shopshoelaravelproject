@@ -131,11 +131,15 @@ class PageController extends Controller
         return redirect('orderproduct/'.$request->idpro .'/'.$request->size.'/'.$request->quantity);
     }
 
-    public function inforoder(){
-        return view('pages.infororder');
+    public function inforoder($id){
+        $data['billexs'] = BillExport::Where('id_user',$id)->OrderBy('status','asc')->get();
+        return view('pages.infororder',$data);
     }
-    public function detailinfororder(){
-        return view('pages.detail-infor-order');
+    public function detailinfororder($id){
+        $iduser = Auth::user()->id;
+        $data['detailbillex'] = DB::table('detail_bill_export as a')->join('bill_export as b','a.id_bill_export','=','b.id')->join('detail_product as c','a.id_detail_product','=','c.id')->join('product  as d','c.id_product','=','d.id')->select('a.*','b.id as idbill','b.*','d.name')->join('size_product  as e','c.id_size','=','e.id')->select('a.*','b.id as idbill','b.*','d.name','e.size')->where([['b.id',$id],['b.id_user',$iduser]])->get();
+       $data['billex'] = BillExport::find($id);
+        return view('pages.detail-infor-order',$data);
     }
 
 
@@ -234,6 +238,7 @@ class PageController extends Controller
        
         $billex = new BillExport;
         $billex->id_user = $iduser;
+        $billex->nameCusromer= $request->username;
         $billex->phone = $request->phone;
         $billex->totalmoney=$Total;
         $billex->payment = $request->thanhtoan;

@@ -316,12 +316,16 @@ opacity: .5;
 /* theo doi don hang */
 #tablebill2 th{
     text-align: center;
+    width: 400px;
+    margin: 0 auto;
 }
 /* end chi tiet sp */
 /* Table Bill */
 #tablebill{
     font-size: 15px;
-    margin: 60px 15px
+    /* margin: 60px 15px; */
+    width: 600px;
+    margin: 60px auto;
 }
 #tablebill td{
     padding: 12px 50px;

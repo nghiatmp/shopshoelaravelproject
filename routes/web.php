@@ -12,7 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('pages.index');
+    return redirect(route('page.index'));
 });
 
 
@@ -68,35 +69,44 @@ Route::post('admin/login','admin\UserController@postlogin')->name('postlogin');
 Route::get('admin/logout','admin\UserController@logout')->name('logout');
 
 
-//////frontend
-Route::get('/index','page\PageController@index')->name('page.index');
-
-Route::get('/login','page\PageController@getlogin')->name('page.getlogin');
-Route::post('/login','page\PageController@postlogin')->name('page.postlogin');
-
-Route::get('/register','page\PageController@getregister')->name('page.getregister');
-Route::post('/register','page\PageController@postregister')->name('page.postregister');
-
-Route::get('logout','page\PageController@logout')->name('page.logout');
-Route::get('contact','page\PageController@contact')->name('page.contact');
-Route::get('detailcate/{id}','page\PageController@detailcate')->name('page.detailcate');
-Route::get('detailproduct/{id}','page\PageController@detailproduct')->name('page.detailproduct');
-
 // theo doi don hang
-Route::get('inforoder','page\PageController@inforoder')->name('page.inforoder');
-Route::get('detail-infor-order','page\PageController@detailinfororder')->name('page.detailinfororder');
+Route::group(['namespace'=>'page'],function(){
+
+		Route::get('/index','PageController@index')->name('page.index');
+
+		Route::get('/login','PageController@getlogin')->name('page.getlogin');
+		Route::post('/login','PageController@postlogin')->name('page.postlogin');
+
+		Route::get('/register','PageController@getregister')->name('page.getregister');
+		Route::post('/register','PageController@postregister')->name('page.postregister');
+
+		Route::get('logout','PageController@logout')->name('page.logout');
+		Route::get('contact','PageController@contact')->name('page.contact');
+		Route::get('detailcate/{id}','PageController@detailcate')->name('page.detailcate');
+		Route::get('detailproduct/{id}','PageController@detailproduct')->name('page.detailproduct');
 
 
-// cart
-	Route::get('cart','page\PageController@cart')->name('page.cart');
-	Route::post('order','page\PageController@postorder')->name('page.order');
-	Route::get('orderproduct/{idpro}/{idsize}/{quantity}','page\PageController@orderproduct')->name('page.ordercart');
-	Route::get('cartshop','page\PageController@cartshop')->name('page.cartshop');
+		// cart
+		Route::get('cart','PageController@cart')->name('page.cart');
+		Route::post('order','PageController@postorder')->name('page.order');
+		Route::get('orderproduct/{idpro}/{idsize}/{quantity}','PageController@orderproduct')->name('page.ordercart');
+		Route::get('cartshop','PageController@cartshop')->name('page.cartshop');
 
-	Route::get('deletecart/{id}','page\PageController@deletecart')->name('page.deletecart');
+		Route::get('deletecart/{id}','PageController@deletecart')->name('page.deletecart');
 
-	// giao dien dat hang
-	Route::get('order','page\PageController@order')->name('page.order');
+		// giao dien dat hang
+		Route::get('order','PageController@order')->name('page.order');
 
-	//dat hang
-	Route::post('make-bill','page\PageController@makebill')->name('make-bill');
+		//dat hang
+		Route::post('make-bill','PageController@makebill')->name('make-bill');
+});
+
+
+Route::group(['namespace'=>'page','middleware'=>'ckeck.user.order'],function(){
+
+		// theo doi don hang
+		Route::get('inforoder/{id}','PageController@inforoder')->name('page.inforoder');
+		Route::get('detail-infor-order/{id}','PageController@detailinfororder')->name('page.detailinfororder');
+
+});
+
