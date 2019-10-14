@@ -32,6 +32,7 @@ Route::group(['prefix'=>'admin','namespace'=>'admin','middleware'=>'adminlogin']
 
 	Route::group(['prefix'=>'ajax'],function(){
 		Route::get('type/{id}','AjaxController@gettype');
+		Route::get('approved/{id}','AjaxController@approved');
 		
 	});
 	Route::group(['prefix'=>'category'],function(){
@@ -59,6 +60,7 @@ Route::group(['prefix'=>'admin','namespace'=>'admin','middleware'=>'adminlogin']
 	Route::group(['prefix'=>'billex'],function(){
 		Route::get('list','BillExportController@list')->name('billex-list');
 		Route::get('detailbillex/{id}','BillExportController@detailbillex')->name('detailbillex');
+		Route::get('approved','BillExportController@approved')->name('approved');
 	});
 	
 });

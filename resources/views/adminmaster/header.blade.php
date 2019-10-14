@@ -114,10 +114,10 @@
                                 <li>
                                     <a href="{{ route('billex-list') }}">List Bill</a>
                                 </li>
-                               {{--  <li>
-                                    <a href="{{route('addproduct')}}">Add Product</a> 
+                                <li>
+                                    <a href="{{route('approved')}}">Approved Orders</a> 
                                     
-                                </li> --}}
+                                </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>

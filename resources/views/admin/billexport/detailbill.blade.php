@@ -20,42 +20,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                        	{{-- @foreach($users as $user)
+                        	@foreach($detailbillexs as $detailbillex)
                             <tr class="odd gradeX" align="center">
-                                <td>{{ $user ->id }}</td>
-                                <td>{{ $user ->fullname }}</td>
-                                <td>{{ $user ->email }}</td>
-                                <td>
-                                	@if( $user ->role ==0)
-                                	{{'admin' }}
-                                	@elseif( $user ->role ==1)
-                                	{{ 'staff' }}
-                                	@else
-                                	{{ 'member' }}
-                                	@endif
-                                </td>
-                                 <td>
-                                    @if( $user ->gender ==0)
-                                    {{'Male' }}
-                                   
-                                    @else
-                                    {{ 'Female' }}
-                                    @endif
-                                </td>
-                                <td>
-                                	<img src="upload/user/{{$user->avatar  }}" alt="" width="80px" height="80px" style="border-radius: 50%">
-                                </td>
-                                
-                                <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="admin/user/edit/{{ $user->id }}">Edit</a></td>
-                                <td class="center"><i class="fa fa-trash-o  fa-fw"></i><a href="admin/user/delete/{{ $user->id }}" onclick="return confirm('Are you sure');"> Delete</a></td>
+                                <td>{{ $detailbillex ->name }}</td>
+                                <td>{{ $detailbillex ->size }}</td>
+                                <td>{{ $detailbillex ->quanlity }}</td>
+                                <td>{{ $detailbillex ->price }}</td>
+                                <td>{{ $detailbillex ->price*$detailbillex ->quanlity }}</td>
                             </tr>
-                            @endforeach --}}
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
                 <!-- /.row -->
                 <div style="text-align: center">
-						{{-- {{$users->links()}} --}}
+						{{$detailbillexs->links()}}
 				</div>
             </div>
             <!-- /.container-fluid -->

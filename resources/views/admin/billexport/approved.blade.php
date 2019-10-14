@@ -1,5 +1,5 @@
 @extends('adminmaster.index')
-@section('title','list Billex')
+@section('title','approved order')
 @section('content')
 	 <div id="page-wrapper">
             <div class="container-fluid">
@@ -16,7 +16,7 @@
                                 <th>Tên Khách Hàng</th>
                                 <th>Ngày Tạo Hóa Đơn</th>
                                 <th>Tổng Tiền</th>
-                                <th>Chi Tiết Hóa Đơn</th>
+                                <th>Duyệt Đơn Hàng</th>
                                 <th>Hủy Đơn Hàng</th>
                                 
                             </tr>
@@ -29,7 +29,9 @@
                                 <td>{{ $billex ->created_at }}</td>
                                 <td>{{ $billex ->totalmoney }} </td>
                                 <td>
-                                	<a href="admin/billex/detailbillex/{{ $billex->id }}" title="">Chi Tiết Hóa Đơn</a>
+                                	<button type="submit" class="btn btn-primary approved">Duyệt Đơn Hàng</button>
+                                    <input type="hidden" class="id" value="{{ $billex ->id }}">
+
                                 </td>
                                 <td>
                                     <button type="submit" class="btn btn-danger">Hủy Đơn Hàng</button>
@@ -48,4 +50,21 @@
             <!-- /.container-fluid -->
         </div>
 
+@endsection
+
+@section('script')
+    <script type="text/javascript">
+       $(document).ready(function(){
+        $('.approved').click(function(){
+            var id = $(this).parent().find('.id').val();
+            $.get("admin/ajax/approved/"+id,function(data){
+                // $('#child').html(data);
+                if(data == 'ok'){
+                    window.location = 'admin/billex/approved'
+                }
+            });
+
+        });
+    });
+    </script>
 @endsection
