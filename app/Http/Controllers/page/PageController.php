@@ -271,7 +271,9 @@ class PageController extends Controller
                 Cart::session(Auth::user()->id)->remove($cart['id']);
             
         }
-        return redirect(route('page.order'))->with('thongbao','Đặt hàng Thành Công');
+        // return redirect(route('page.order'))->with('thongbao','Đặt hàng Thành Công');
+         return redirect('inforoder/'.Auth::user()->id)->with('thongbao','Đặt hàng Thành Công');
+
 
 
     }

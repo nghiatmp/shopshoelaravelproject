@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Categories;
 use App\BillExport;
+use Illuminate\Support\Facades\Auth;
 
 class AjaxController extends Controller
 {
@@ -18,6 +19,7 @@ class AjaxController extends Controller
 
     public function approved($id){
     	$data = BillExport::find($id);
+    	$data->id_usermakebill = Auth::user()->id;
     	$data->status = 1 ;
     	$data ->save();
     	echo 'ok';
