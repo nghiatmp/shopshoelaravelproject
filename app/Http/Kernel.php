@@ -62,6 +62,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'adminlogin'=> \App\Http\Middleware\loginAdminMiddleware::class,
         'ckeck.user.order'=>\App\Http\Middleware\CheckUserOrderMiddleWare::class,
+        'ckeck.user.edit'=>\App\Http\Middleware\updateUserMiddleware::class,
     ];
 
     /**

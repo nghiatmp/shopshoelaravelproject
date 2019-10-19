@@ -18,6 +18,7 @@ use App\Http\Requests\page\StoreMakeBill;
 use App\Http\Requests\page\StoreRegisterPage;
 use App\Http\Requests\page\StoreLoginPage;
 use App\Http\Requests\page\StorePostOrderPage;
+use App\Http\Requests\page\StoreUpdateUser;
 class PageController extends Controller
 {
 
@@ -274,8 +275,72 @@ class PageController extends Controller
         // return redirect(route('page.order'))->with('thongbao','Đặt hàng Thành Công');
          return redirect('inforoder/'.Auth::user()->id)->with('thongbao','Đặt hàng Thành Công');
 
+    }
 
 
+    public function infor(){
+        $id = Auth::user()->id;
+        $data['info'] = User::find($id);
+        return view('pages.infor',$data);
+    }
+    public function update(){
+         $id = Auth::user()->id;
+         $data['info'] = User::find($id);
+        return view('pages.update-user',$data);
+    }
+    public function postupdate(Request $request){
+        // dd($request->all());
+
+        $id =Auth::user()->id;
+        $validator = Validator::make($request->all(), [
+           'user'=>'required|min:3|max:100|unique:users,fullname,'.$id,
+           'birthday'=>'required',
+           'email'=>'required|email|unique:users,email,'.$id, 
+           'phone'=>'numeric|required',
+           'address' => 'required',
+           // 'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect(route('page.update'))
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
+
+         $user = User::find($id);
+
+        if($request->checkpass == "on"){
+                $validator = Validator::make($request->all(), [
+               'pass'=>'required|min:6|max:10',
+               'passAgain'=>'required|same:pass',
+           
+            ]);
+
+            if ($validator->fails()) {
+                return redirect(route('page.update'))
+                            ->withErrors($validator)
+                            ->withInput();
+            }
+             $user->password=bcrypt($request->pass);
+        }
+
+       
+        $user->fullname = $request->user;
+        $user->email = $request->email;
+        $user->gender= $request->gender;
+        $user->phone = $request->phone;
+        $user->birthday = $request->birthday;
+        $user->address = $request->address;
+        $user->role = 2;
+       
+        if(isset($request->avatar)){
+            $avatar = time().'.'.$request->avatar->extension();
+            $request->avatar->move(public_path('upload/user/'), $avatar);
+            $user->avatar= $avatar;
+        }
+        $user->save();
+        return redirect(route('page.infor'))->with('thongbao','Bạn cập nhật thông tin thành công');
     }
 
 

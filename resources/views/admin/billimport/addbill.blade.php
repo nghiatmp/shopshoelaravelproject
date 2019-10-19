@@ -1,66 +1,41 @@
 @extends('adminmaster.index')
-@section('title')
-	Add Bill Import
-@endsection
+@section('title','Add Bill Import')
 @section('content')
 	<div id="page-wrapper">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Product
-                            <small>Add</small>
-                        </h1>
+                        <h1 class="page-header">Bill Import Add</h1>
                     </div>
+                    @include('adminmaster.error')
                     <!-- /.col-lg-12 -->
                     <div class="col-lg-7" style="padding-bottom:120px">
-                        <form action="" method="POST">
-                            <div class="form-group">
-                                <label>Category Parent</label>
-                                <select class="form-control">
-                                    <option value=""></option>
-                                    <option value="">Adidas</option>
-                                    <option value="">Nike</option>
-                                    <option value="">Puma</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Category Child</label>
-                                <select class="form-control">
-                                    <option value=""></option>
-                                    <option value="">Boot</option>
-                                    <option value="">Puma</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Name</label>
-                                <input class="form-control" name="txtName" placeholder="Please Enter Username" />
-                            </div>
-                            <div class="form-group">
-                                <label>Unit_Price</label>
-                                <input class="form-control" name="txtPrice" placeholder="Please Enter Password" />
-                            </div>
+                        <form action="{{ route('billim-postadd') }}" method="POST">
+                            @csrf
                              <div class="form-group">
-                                <label>Promotion_Price</label>
-                                <input class="form-control" name="txtPrice" placeholder="Please Enter Password" />
+                                <label>Supplier</label>
+                                <select class="form-control" name="supplier">
+                                    <option value="">---Choose Supplier---</option>
+                                    @foreach($suppliers as $supplier)
+                                        <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="form-group">
-                                <label>Product Description</label>
-                                <textarea class="form-control" rows="3"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Images</label>
-                                <input type="file" name="fImages">
-                            </div>
-                            <div class="form-group">
-                                <label>Product Status</label>
+                                <label>Payment</label>
                                 <label class="radio-inline">
-                                    <input name="rdoStatus" value="1" checked="" type="radio">Visible
+                                    <input name="rdoStatus" value="1" checked="" type="radio">ATM
                                 </label>
                                 <label class="radio-inline">
-                                    <input name="rdoStatus" value="2" type="radio">Invisible
+                                    <input name="rdoStatus" value="2" type="radio">Payment
                                 </label>
                             </div>
-                            <button type="submit" class="btn btn-default">Product Add</button>
+                            <div class="form-group">
+                                <label>Note</label>
+                                <textarea name="note" class="form-control"></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-default">Create Bill</button>
                             <button type="reset" class="btn btn-default">Reset</button>
                         <form>
                     </div>
@@ -69,4 +44,29 @@
             </div>
             <!-- /.container-fluid -->
         </div>
+@endsection
+
+
+@section('script')
+<script>
+    $(document).ready(function(){
+        $('#cate').change(function(){
+            var id = $(this).val();
+            $.get("admin/ajax/addbill/"+id,function(data){
+                $('#product').html(data);
+            });
+
+        });
+    });
+    $(document).ready(function(){
+        $('#product').change(function(){
+            var id = $(this).val();
+            $.get("admin/ajax/addbillSize/"+id,function(data2){
+                $('#size').html(data2);
+            });
+
+        });
+    });
+</script>
+
 @endsection

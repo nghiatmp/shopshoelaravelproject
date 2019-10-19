@@ -24,7 +24,7 @@
 					
 
 						    <div class="dropdown-menu">
-							      <a class="dropdown-item" href="#">Sửa Thông Tin</a>
+							      <a class="dropdown-item" href="{{ route('page.infor') }}">Thông Tin Cá Nhân</a>
 							      <a class="dropdown-item" href="inforoder/{{  Auth::user()->id }}">Theo Dõi Đơn Hàng</a>
 							</div>
 						  </div>

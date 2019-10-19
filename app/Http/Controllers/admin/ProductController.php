@@ -4,9 +4,13 @@ namespace App\Http\Controllers\admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use DB;
 use App\Product;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+
+use App\Traits\UploadTrait;
 
 class ProductController extends Controller
 {
@@ -27,30 +31,45 @@ class ProductController extends Controller
         return view('admin.product.add',$data);
     }
     public function postadd(Request $req){
-        $this->validate($req,
-            [
-                'namepro'=>'required|min:3|max:300|unique:product,name',
-                'description'=>'required|min:3|max:100',
-                'unitprice'=>'required|numeric',
-                'proprice'=>'required|numeric',
-                'images' =>'max:5120',
-            ],
-            [
-                'namepro.required'=>'Bạn chưa nhập tên Product',
-                'namepro.min'=>'Tên Product phải dài từ 3 đến 100 ký tự',
-                'namepro.max'=>'Tên Product phải dài từ 3 đến 100 ký tự',
-                'namepro.unique'=>'Tên Product phải là duy nhất',
-                'description.required'=>'Bạn chưa nhập description',
-                'description.min'=>'Description phải dài từ 3 đến 100 ký tự',
-                'description.max'=>'Description phải dài từ 3 đến 100 ký tự',
-                'unitprice.required'=>'Bạn chưa nhập Unit_Price',
-                'unitprice.numeric'=>'Unit_Price bánh phải là số',
-                'proprice.required'=>'Bạn chưa nhập Promotion_Price',
-                'proprice.numeric'=>'Promotion_Price bánh phải là số',
-                'images.max'=>'Kích thuoc anh qua lon',
+        // $this->validate($req,
+        //     [
+        //         'namepro'=>'required|min:3|max:300|unique:product,name',
+        //         'description'=>'required|min:3|max:100',
+        //         'unitprice'=>'required|numeric',
+        //         'proprice'=>'required|numeric',
+        //         // 'images' =>'max:5120',
+        //         'images' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        //     ],
+        //     [
+        //         'namepro.required'=>'Bạn chưa nhập tên Product',
+        //         'namepro.min'=>'Tên Product phải dài từ 3 đến 100 ký tự',
+        //         'namepro.max'=>'Tên Product phải dài từ 3 đến 100 ký tự',
+        //         'namepro.unique'=>'Tên Product phải là duy nhất',
+        //         'description.required'=>'Bạn chưa nhập description',
+        //         'description.min'=>'Description phải dài từ 3 đến 100 ký tự',
+        //         'description.max'=>'Description phải dài từ 3 đến 100 ký tự',
+        //         'unitprice.required'=>'Bạn chưa nhập Unit_Price',
+        //         'unitprice.numeric'=>'Unit_Price bánh phải là số',
+        //         'proprice.required'=>'Bạn chưa nhập Promotion_Price',
+        //         'proprice.numeric'=>'Promotion_Price bánh phải là số',
+        //         // 'images.max'=>'Kích thuoc anh qua lon',
 
-            ]
-        );
+        //     ]
+        // );
+        $validator = Validator::make($req->all(), [
+           'namepro'=>'required|min:3|max:300|unique:product,name',
+            'description'=>'required|min:3|max:100',
+            'unitprice'=>'required|numeric',
+            'proprice'=>'required|numeric',
+                // 'images' =>'max:5120',
+            'images' => 'max:2048|required|image|mimes:jpeg,png,jpg,gif,svg',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect(route('addproduct'))
+                        ->withErrors($validator)
+                        ->withInput();
+        }
         $product = new Product;
         if(isset($req->child)){
             $product->id_cate=$req->child;
@@ -63,17 +82,17 @@ class ProductController extends Controller
         $product->unit_price = $req->unitprice;
         $product->promotion_price = $req->proprice;
         $product->status= $req->rdoStatus;
-        
-        $req->validate([
 
-            'images' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
 
-        ]);
-        $imageName = time().'.'.$req->images->extension();  
-        $req->images->move(public_path('upload/product/'), $imageName);
-        $product->image  = $imageName;
+        if($req->hasFile('images')){
+            $imageName = $req->images->getClientOriginalName();
+            $product->image  = $imageName;
 
-        $product->save();
+            $product->save();
+            $req->images->move(public_path('upload/product/'), $imageName);
+                
+        }
+       
         return back()->with('thongbao','Bạn đã thêm product thành công');
     }
     public function edit($id){
@@ -142,7 +161,8 @@ class ProductController extends Controller
 
             ]);
             $imageName = time().'.'.$req->images->extension();  
-            $req->images->move(public_path('upload/product/'), $imageName);
+            // $req->images->move(public_path('upload/product/'), $imageName);
+             $req->images->move(public_path('upload/product/'), $imageName);
             $product->image  = $imageName;
         }
 

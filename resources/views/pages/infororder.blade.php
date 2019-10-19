@@ -6,9 +6,10 @@
 
 @section('content')
 	<div class="content mt-5">
-		@include('pagemaster.note')
+		
 		<div class="row">
 			<div class="container">
+				@include('pagemaster.note')
 				<h2 class="text-justify mb-5" style="margin-left: 400px">Thông Tin Đơn Hàng  <a href="{{ route('page.index') }}" style="font-size: 15px">(Quay lại trang chủ)</a></h2>
 			
 		</div>

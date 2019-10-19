@@ -33,7 +33,8 @@ Route::group(['prefix'=>'admin','namespace'=>'admin','middleware'=>'adminlogin']
 	Route::group(['prefix'=>'ajax'],function(){
 		Route::get('type/{id}','AjaxController@gettype');
 		Route::get('approved/{id}','AjaxController@approved');
-		
+		Route::get('addbill/{id}','AjaxController@addbill');
+		Route::get('addbillSize/{id}','AjaxController@addbillSize');
 	});
 	Route::group(['prefix'=>'category'],function(){
 		Route::get('list','CategoryController@list')->name('categorylist');
@@ -61,6 +62,17 @@ Route::group(['prefix'=>'admin','namespace'=>'admin','middleware'=>'adminlogin']
 		Route::get('list','BillExportController@list')->name('billex-list');
 		Route::get('detailbillex/{id}','BillExportController@detailbillex')->name('detailbillex');
 		Route::get('approved','BillExportController@approved')->name('approved');
+	});
+
+	Route::group(['prefix'=>'billim'],function(){
+		Route::get('list','BillImportController@list')->name('billim-list');
+		Route::get('detail-import/{id}','BillImportController@detailimport')->name('billim-detail');
+
+		Route::get('add','BillImportController@add')->name('billim-add');
+		Route::post('addbill','BillImportController@postaddbill')->name('billim-postadd');
+
+		Route::get('add-detail-bill/{id}','BillImportController@adddetail')->name('billim-adddetail');
+		Route::post('add-detail-bill','BillImportController@postdetailaddbill')->name('billim-postadddetail');
 	});
 	
 });
@@ -101,6 +113,15 @@ Route::group(['namespace'=>'page'],function(){
 
 		//dat hang
 		Route::post('make-bill','PageController@makebill')->name('make-bill');
+
+		//user
+		Route::group(['middleware'=>'ckeck.user.edit'],function(){
+			Route::get('infor','PageController@infor')->name('page.infor');
+			Route::get('update','PageController@update')->name('page.update');
+
+			Route::post('update','PageController@postupdate')->name('page.postupdate');
+		});
+
 });
 
 

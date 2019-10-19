@@ -119,7 +119,20 @@
                                     
                                 </li>
                             </ul>
-                            <!-- /.nav-second-level -->
+                
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-cube fa-fw"></i> Bill Import<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{ route('billim-list') }}">List Bill</a>
+                                </li>
+                                <li>
+                                    <a href="{{route('billim-add')}}">Add Bill</a> 
+                                    
+                                </li>
+                            </ul>
+                          
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-users fa-fw"></i> User<span class="fa arrow"></span></a>
