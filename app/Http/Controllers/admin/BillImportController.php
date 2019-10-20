@@ -22,7 +22,7 @@ class BillImportController extends Controller
     }
 
     public function detailimport($id){
-    	$data['details'] = DB::table('detail_bill_import as a')->join('detail_product as b','a.id_detail_product','=','b.id')->join('size_product as c','b.id_size','=','c.id')->join('product as d','b.id_product','=','d.id')->select('a.*','b.id as id_detail','c.size','d.name as nameproduct')->where('a.id_bill_import',$id)->paginate(10);
+    	$data['details'] = DB::table('detail_bill_import as a')->join('detail_product as b','a.id_detail_product','=','b.id')->join('size_product as c','b.id_size','=','c.id')->join('product as d','b.id_product','=','d.id')->select('a.*','b.id as id_detail','c.size','d.name as nameproduct','d.id as idproduct')->where('a.id_bill_import',$id)->paginate(10);
 
     	return view('admin.billimport.detail-import',$data);
     }
@@ -55,19 +55,57 @@ class BillImportController extends Controller
     }
 
     public function postdetailaddbill(StoreAddDetailBill $request){
-        $detailbill = new DetailBillImport;
+       
         $detailpro=DetailProduct::where([['id_product',$request->product],['id_size',$request->size]])->first();
 
+        $countBill = DB::table('detail_bill_import as dt')
+                    ->select(DB::raw('count(id) as sl'))
+                    ->where([['id_bill_import',$request->idbill],['id_detail_product',$detailpro->id]])
+                    ->first();
+       
 
-        $detailbill->id_bill_import =$request->idbill;
-        $detailbill->id_detail_product =$detailpro->id;
-        $detailbill->quanlity = $request->quantity;
-        $detailbill->price    = $request->price;
+       
+        if($countBill->sl > 0){
+                // $detailBill = DB::table('detail_bill_import')
+                //     ->where([['id_bill_import',$request->idbill],['id_detail_product',$detailpro->id]])
+                //     ->first();
+                $detailBill =DetailBillImport::where([['id_bill_import',$request->idbill],['id_detail_product',$detailpro->id]])->first();
+                
 
-        dd($detailbill);
-        // $detailbill->save();
-        // $detailpro->quanlity = $detailpro->quanlity + $request->quantity;
-        // $detailpro->save();
+                // DB::table('detail_bill_import')
+                // ->where([['id_bill_import',$request->idbill],['id_detail_product',$detailpro->id]])
+                // ->update(
+                //     [
+                //         'quanlity' => $detailBill->quanlity +  $request->quantity,
+                //         'price'    => $detailBill->price  + $request->price
+                //     ]);
+                $detailBill->quanlity = $detailBill->quanlity +  $request->quantity;
+                $detailBill->price    = $detailBill->price  + $request->price;
+
+                $detailBill->save();
+
+        }else{
+
+            $detailbill = new DetailBillImport;
+
+            $detailbill->id_bill_import =$request->idbill;
+            $detailbill->id_detail_product =$detailpro->id;
+            $detailbill->quanlity = $request->quantity;
+            $detailbill->price    = $request->price;
+
+            $detailbill->save();
+        }
+            $detailpro->quanlity = $detailpro->quanlity + $request->quantity;
+            $detailpro->save();
+
+            $total = DB::table('detail_bill_import')
+                    ->select(DB::raw('SUM(price*quanlity) as Total'))
+                    ->where('id_bill_import',$request->idbill)
+                    ->first();
+            // dd($total);
+            $bill_import = BillImport::find($request->idbill);
+            $bill_import->totalmoney = $total->Total;
+            $bill_import->save();
 
         return redirect()->route('billim-list')->with('thongbao','Bạn đã thêm chi tiết thành công');
 

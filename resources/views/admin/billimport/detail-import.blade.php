@@ -14,6 +14,7 @@
                             <tr align="center">
                                 <th>Mã CTSP</th>
                                 <th>Tên Sản Phẩm</th>
+                                <th>Mã Sản Phẩm</th>
                                 <th>Size</th>
                                 <th>Số Lượng</th>
                                 <th>Giá Nhập</th>
@@ -26,10 +27,11 @@
                             <tr class="odd gradeX" align="center">
                                 <td>{{ $detail ->id_detail }}</td>
                                 <td>{{ $detail ->nameproduct }}</td>
+                                <td>{{ $detail ->idproduct }}</td>
                                 <td>{{ $detail ->size }}</td>
                                 <td>{{ $detail ->quanlity }}</td>
-                                <td>{{ $detail ->price }} </td>
-                                <td> {{ $detail ->price * $detail ->quanlity }}</td>
+                                <td>{{ number_format($detail ->price ,0 ,'.' ,'.').' Đ' }}</td>
+                                <td>{{ number_format($detail->price * $detail ->quanlity  ,0 ,'.' ,'.').' Đ' }}</td>
                                 
                             </tr>
                             @endforeach

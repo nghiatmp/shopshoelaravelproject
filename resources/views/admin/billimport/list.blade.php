@@ -29,7 +29,7 @@
                                 <td>{{ $billimport ->namesupplier }}</td>
                                 <td>{{ $billimport ->created_at }}</td>
                                 <td>{{ $billimport ->namestaff }}</td>
-                                <td>{{ $billimport ->totalmoney }} </td>
+                                <td>{{ number_format($billimport ->totalmoney ,0 ,'.' ,'.').' Đ' }} </td>
                                 <td>
                                 	<a href="admin/billim/detail-import/{{ $billimport->id }}" title="">Chi Tiết Hóa Đơn</a>
                                 </td>
