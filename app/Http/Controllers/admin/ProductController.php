@@ -15,19 +15,35 @@ use App\Traits\UploadTrait;
 class ProductController extends Controller
 {
     public function listproduct(){
-    	$data['product']= DB::table('product')->leftjoin('categories_product','product.id_cate','=','categories_product.id')->select('product.id','product.name','product.description','product.unit_price','product.promotion_price','product.image','categories_product.id as idcate','categories_product.name as catename','categories_product.id_parent')->where('product.status',1)->get();
+    	$data['product']= DB::table('product')
+                        ->leftjoin('categories_product','product.id_cate','=','categories_product.id')
+                        ->select('product.id','product.name','product.description','product.unit_price','product.promotion_price','product.image','categories_product.id as idcate','categories_product.name as catename','categories_product.id_parent')
+                        ->where('product.status',1)->get();
     	$data['cate'] = DB::table('categories_product')->select('id','name')->where('id_parent',0)->get();
    	
     	return view('admin.product.list',$data);
     }
 
     public function detailproduct($id){
-    	$data['product']= DB::table('product')->join('detail_product','product.id','=','detail_product.id_product')->join('size_product','detail_product.id_size','=','size_product.id')->select('detail_product.id','product.name','detail_product.quanlity','size_product.size')->where([['detail_product.id_product',$id],['product.status',1]])-> orderby('detail_product.id')->get();
+    	$data['product']= DB::table('product')
+                        ->join('detail_product','product.id','=','detail_product.id_product')
+                        ->join('size_product','detail_product.id_size','=','size_product.id')
+                        ->select('detail_product.id','product.name','detail_product.quanlity','size_product.size')
+                        ->where([['detail_product.id_product',$id],['product.status',1]])
+                        -> orderby('detail_product.id')
+                        ->get();
     	return view('admin.product.detail',$data);
     }
     public function add(){
-        $data['cateparent'] = DB::table('categories_product')->select('id','name','id_parent')->where([['id_parent',0],['status',1]])->get();
-        $data['catechild'] = DB::table('categories_product')->select('id','name','id_parent')->where([['id_parent','<>',0],['status',1]])->get();
+        $data['cateparent'] = DB::table('categories_product')
+                                ->select('id','name','id_parent')
+                                ->where([['id_parent',0],['status',1]])
+                                ->get();
+
+        $data['catechild'] = DB::table('categories_product')
+                            ->select('id','name','id_parent')
+                            ->where([['id_parent','<>',0],['status',1]])
+                            ->get();
         return view('admin.product.add',$data);
     }
     public function postadd(Request $req){
@@ -96,10 +112,20 @@ class ProductController extends Controller
         return back()->with('thongbao','Bạn đã thêm product thành công');
     }
     public function edit($id){
-        $data['cateparent'] = DB::table('categories_product')->select('id','name','id_parent')->where([['id_parent',0],['status',1]])->get();
-        $data['catechild'] = DB::table('categories_product')->select('id','name','id_parent')->where([['id_parent','<>',0],['status',1]])->get();
+        $data['cateparent'] = DB::table('categories_product')
+                            ->select('id','name','id_parent')
+                            ->where([['id_parent',0],['status',1]])
+                            ->get();
+        $data['catechild'] = DB::table('categories_product')
+                            ->select('id','name','id_parent')
+                            ->where([['id_parent','<>',0],['status',1]])
+                            ->get();
         
-        $data['product']=DB::table('product')->join('categories_product','product.id_cate','=','categories_product.id')->select('product.id','product.name','product.description','product.unit_price','product.promotion_price','product.image','product.status','categories_product.id as id_cate','categories_product.name as catename','categories_product.id_parent')->where('product.id',$id)->first();
+        $data['product']=DB::table('product')
+                        ->join('categories_product','product.id_cate','=','categories_product.id')
+                        ->select('product.id','product.name','product.description','product.unit_price','product.promotion_price','product.image','product.status','categories_product.id as id_cate','categories_product.name as catename','categories_product.id_parent')
+                        ->where('product.id',$id)
+                        ->first();
         return view('admin.product.edit',$data);
     }
     public function postedit($id,Request $req){

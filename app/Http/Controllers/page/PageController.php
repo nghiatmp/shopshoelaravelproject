@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Product;
 use App\Categories;
+use App\Feedback;
 use DB;
 use Illuminate\Support\Facades\View;
 use App\User;
@@ -19,6 +20,8 @@ use App\Http\Requests\page\StoreRegisterPage;
 use App\Http\Requests\page\StoreLoginPage;
 use App\Http\Requests\page\StorePostOrderPage;
 use App\Http\Requests\page\StoreUpdateUser;
+use App\Http\Requests\page\StoreComment;
+
 class PageController extends Controller
 {
 
@@ -100,7 +103,12 @@ class PageController extends Controller
         $category = Categories::find($id);
 
         if($category->id_parent == 0){
-           $data['products']= DB::table('product')->leftjoin('categories_product','product.id_cate','=','categories_product.id')->select('product.*','categories_product.id as idcate','categories_product.name as catename','categories_product.id_parent')->where([['product.status',1],['categories_product.id_parent',$id]])->orWhere('product.id_cate',$id)->paginate(12);
+           $data['products']= DB::table('product')
+                            ->leftjoin('categories_product','product.id_cate','=','categories_product.id')
+                            ->select('product.*','categories_product.id as idcate','categories_product.name as catename','categories_product.id_parent')
+                            ->where([['product.status',1],['categories_product.id_parent',$id]])
+                            ->orWhere('product.id_cate',$id)
+                            ->paginate(12);
 
 
         }else{
@@ -113,8 +121,19 @@ class PageController extends Controller
 
     public function detailproduct($id){
         $data['product'] = Product::find($id); 
-        $data['detailproducts'] = DB::table('detail_product')->leftjoin('size_product','detail_product.id_size','=','size_product.id')->select('detail_product.*','size_product.size')->where([['detail_product.id_product',$id],['detail_product.quanlity','>',0]])->get();
+        $data['detailproducts'] = DB::table('detail_product')
+                                ->leftjoin('size_product','detail_product.id_size','=','size_product.id')
+                                ->select('detail_product.*','size_product.size')
+                                ->where([['detail_product.id_product',$id],['detail_product.quanlity','>',0]])
+                                ->get();
+
         $data['otherproduct'] = Product::where('id_cate',$data['product']->id_cate)->take(8)->get();
+
+        $data['comments']   = DB::table('feedback as a')
+                            ->join('users as b','a.id_user','=','b.id')
+                            ->select('a.*','b.avatar')
+                            ->where('id_product',$id)
+                            ->get();
         return view('pages.detailproduct',$data);
     }
 
@@ -138,15 +157,27 @@ class PageController extends Controller
     }
     public function detailinfororder($id){
         $iduser = Auth::user()->id;
-        $data['detailbillex'] = DB::table('detail_bill_export as a')->join('bill_export as b','a.id_bill_export','=','b.id')->join('detail_product as c','a.id_detail_product','=','c.id')->join('product  as d','c.id_product','=','d.id')->select('a.*','b.id as idbill','b.*','d.name')->join('size_product  as e','c.id_size','=','e.id')->select('a.*','b.id as idbill','b.*','d.name','e.size')->where([['b.id',$id],['b.id_user',$iduser]])->get();
+        $data['detailbillex'] = DB::table('detail_bill_export as a')
+                                ->join('bill_export as b','a.id_bill_export','=','b.id')
+                                ->join('detail_product as c','a.id_detail_product','=','c.id')
+                                ->join('product  as d','c.id_product','=','d.id')
+                                ->select('a.*','b.id as idbill','b.*','d.name')
+                                ->join('size_product  as e','c.id_size','=','e.id')
+                                ->select('a.*','b.id as idbill','b.*','d.name','e.size')
+                                ->where([['b.id',$id],['b.id_user',$iduser]])
+                                ->get();
        $data['billex'] = BillExport::find($id);
         return view('pages.detail-infor-order',$data);
     }
 
 
     public function orderproduct($idpro,$idsize,$quantity){
-         $product = DB::table('detail_product as a')->leftjoin('size_product as b','a.id_size','=','b.id')->join('product as c','c.id', '=', 'a.id_product')->select('a.*','a.id as id_detail','b.size','c.name','c.id as idproduct','c.*')
-        ->where([['a.id_product',$idpro],['a.id_size',$idsize ]])->first();
+         $product = DB::table('detail_product as a')
+                    ->leftjoin('size_product as b','a.id_size','=','b.id')
+                    ->join('product as c','c.id', '=', 'a.id_product')
+                    ->select('a.*','a.id as id_detail','b.size','c.name','c.id as idproduct','c.*')
+                    ->where([['a.id_product',$idpro],['a.id_size',$idsize ]])
+                    ->first();
         if($product->quanlity >= $quantity){
             if(Auth::check()){
              $iduser = Auth::user()->id;
@@ -228,8 +259,12 @@ class PageController extends Controller
 
         foreach ($carts as $cart) {
            // $id_detail = $cart['id'];
-            $product = DB::table('detail_product as a')->leftjoin('size_product as b','a.id_size','=','b.id')->join('product as c','c.id', '=', 'a.id_product')->select('a.*','a.id as id_detail','b.size','c.name','c.id as idproduct','c.*')
-             ->where('a.id',$cart['id'])->first();
+            $product = DB::table('detail_product as a')
+                        ->leftjoin('size_product as b','a.id_size','=','b.id')
+                        ->join('product as c','c.id', '=', 'a.id_product')
+                        ->select('a.*','a.id as id_detail','b.size','c.name','c.id as idproduct','c.*')
+                        ->where('a.id',$cart['id'])
+                        ->first();
              if($cart['quantity'] > $product->quanlity){
                 return redirect(route('page.order'))->with('thongbao','Số lượng sản phẩm k đáp ứng đủ, Xin giảm số lượng');
              }
@@ -252,8 +287,12 @@ class PageController extends Controller
 
         // detailbillex
         foreach ($carts as $cart) {
-            $product = DB::table('detail_product as a')->leftjoin('size_product as b','a.id_size','=','b.id')->join('product as c','c.id', '=', 'a.id_product')->select('a.*','a.id as id_detail','b.size','c.name','c.id as idproduct','c.*')
-             ->where('a.id',$cart['id'])->first();
+            $product = DB::table('detail_product as a')
+                        ->leftjoin('size_product as b','a.id_size','=','b.id')
+                        ->join('product as c','c.id', '=', 'a.id_product')
+                        ->select('a.*','a.id as id_detail','b.size','c.name','c.id as idproduct','c.*')
+                        ->where('a.id',$cart['id'])
+                        ->first();
 
                 $detailbillex = new DetailBillExport;
                 $detailbillex->id_bill_export =  $billex->id;
@@ -266,8 +305,12 @@ class PageController extends Controller
 
                 // $product->quanlity = ( $product->quanlity ) - ( $cart['quantity']);
                  $quan = ( $product->quanlity ) - ( $cart['quantity']);
-                DB::table('detail_product as a')->leftjoin('size_product as b','a.id_size','=','b.id')->join('product as c','c.id', '=', 'a.id_product')->select('a.*','a.id as id_detail','b.size','c.name','c.id as idproduct','c.*')
-                ->where('a.id',$cart['id'])->update(['quanlity'=>$quan]);
+                DB::table('detail_product as a')
+                ->leftjoin('size_product as b','a.id_size','=','b.id')
+                ->join('product as c','c.id', '=', 'a.id_product')
+                ->select('a.*','a.id as id_detail','b.size','c.name','c.id as idproduct','c.*')
+                ->where('a.id',$cart['id'])
+                ->update(['quanlity'=>$quan]);
 
                 Cart::session(Auth::user()->id)->remove($cart['id']);
             
@@ -341,6 +384,22 @@ class PageController extends Controller
         }
         $user->save();
         return redirect(route('page.infor'))->with('thongbao','Bạn cập nhật thông tin thành công');
+    }
+
+    // comment
+
+
+    public function comment(StoreComment $request){
+        // dd($request->all());
+        $comment = new Feedback;
+        $comment->id_user    = Auth::user()->id;
+        $comment->nameUser   = $request->name;
+        $comment->id_product = $request->idpro;
+        $comment->content    = $request->comment;
+
+        $comment->save();
+
+        return redirect()->route('page.detailproduct',['id'=>$request->idpro])->with('thongbao','Cảm ơn bạn đã để lại bình luận');
     }
 
 

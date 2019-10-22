@@ -30,7 +30,12 @@ class AjaxController extends Controller
 
 
     public function addbill($id){
-        $products= DB::table('product')->leftjoin('categories_product','product.id_cate','=','categories_product.id')->select('product.*')->where([['product.status',1],['categories_product.id_parent',$id]])->orWhere('product.id_cate',$id)->get();
+        $products= DB::table('product')
+                    ->leftjoin('categories_product','product.id_cate','=','categories_product.id')
+                    ->select('product.*')
+                    ->where([['product.status',1],['categories_product.id_parent',$id]])
+                    ->orWhere('product.id_cate',$id)
+                    ->get();
         // dd($products);
         foreach ($products as $product) {
             echo "<option value='".$product->id."'>".$product->name.' ------ Mã Sản Phẩm : '.$product->id."</option>";
@@ -38,7 +43,13 @@ class AjaxController extends Controller
     }
 
     public function addbillSize($id){
-       $detail_products= DB::table('detail_product')->leftjoin('product','detail_product.id_product','=','product.id')->select('detail_product.*')->leftjoin('size_product as c','detail_product.id_size','=','c.id')->select('detail_product.*','c.size')->where([['product.status',1],['detail_product.id_product',$id]])->get();
+       $detail_products= DB::table('detail_product')
+                        ->leftjoin('product','detail_product.id_product','=','product.id')
+                        ->select('detail_product.*')
+                        ->leftjoin('size_product as c','detail_product.id_size','=','c.id')
+                        ->select('detail_product.*','c.size')
+                        ->where([['product.status',1],['detail_product.id_product',$id]])
+                        ->get();
         foreach ($detail_products as $detail_product) {
             echo "<option value='".$detail_product->id_size."'>".$detail_product->size."</option>";
         }

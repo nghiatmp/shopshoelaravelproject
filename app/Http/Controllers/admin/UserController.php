@@ -12,7 +12,10 @@ use DB;
 class UserController extends Controller
 {
     public function list(){
-    	$data['users'] = DB::table('users')->where('status',1)->orderBy('role','asc')->paginate(10);
+    	$data['users'] = DB::table('users')
+                        ->where('status',1)
+                        ->orderBy('role','asc')
+                        ->paginate(10);
     	return view('admin.user.list',$data);
     }
     public function add(){
@@ -152,5 +155,71 @@ class UserController extends Controller
     public function logout(){
         Auth::logout();
         return redirect(route('login'));
+    }
+
+
+    public function inforStaff(){
+        $id = Auth::user()->id;
+        $data['info'] = User::find($id);
+        return view('admin.inforUser.info',$data);
+    }
+
+    public function updateStaff(){
+        $id = Auth::user()->id;
+        $data['info'] = User::find($id);
+        return view('admin.inforUser.update',$data);
+    }
+
+    public function postupdateStaff(Request $request){
+        $id =Auth::user()->id;
+        $validator = Validator::make($request->all(), [
+           'user'=>'required|min:3|max:100|unique:users,fullname,'.$id,
+           'birthday'=>'required',
+           'email'=>'required|email|unique:users,email,'.$id, 
+           'phone'=>'numeric|required',
+           'address' => 'required',
+           // 'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect(route('page.update'))
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
+
+         $user = User::find($id);
+
+        if($request->checkpass == "on"){
+                $validator = Validator::make($request->all(), [
+               'pass'=>'required|min:6|max:10',
+               'passAgain'=>'required|same:pass',
+           
+            ]);
+
+            if ($validator->fails()) {
+                return redirect(route('page.update'))
+                            ->withErrors($validator)
+                            ->withInput();
+            }
+             $user->password=bcrypt($request->pass);
+        }
+
+       
+        $user->fullname = $request->user;
+        $user->email = $request->email;
+        $user->gender= $request->gender;
+        $user->phone = $request->phone;
+        $user->birthday = $request->birthday;
+        $user->address = $request->address;
+        $user->role = 1;
+       
+        if(isset($request->avatar)){
+            $avatar = time().'.'.$request->avatar->extension();
+            $request->avatar->move(public_path('upload/user/'), $avatar);
+            $user->avatar= $avatar;
+        }
+        $user->save();
+        return redirect(route('infor'))->with('thongbao','Bạn cập nhật thông tin thành công');   
     }
 }

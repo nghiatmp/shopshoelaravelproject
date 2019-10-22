@@ -18,7 +18,15 @@ class BillExportController extends Controller
     }
     public function detailbillex($id){
 
-   		$data['detailbillexs'] = DB::table('detail_bill_export as a')->join('bill_export as b','a.id_bill_export','=','b.id')->join('detail_product as c','a.id_detail_product','=','c.id')->join('product  as d','c.id_product','=','d.id')->select('a.*','b.id as idbill','b.*','d.name')->join('size_product  as e','c.id_size','=','e.id')->select('a.*','b.id as idbill','b.*','d.name','e.size')->where([['a.id_bill_export',$id],['b.status',1]])->paginate(10);
+   		$data['detailbillexs'] = DB::table('detail_bill_export as a')
+                                ->join('bill_export as b','a.id_bill_export','=','b.id')
+                                ->join('detail_product as c','a.id_detail_product','=','c.id')
+                                ->join('product  as d','c.id_product','=','d.id')
+                                ->select('a.*','b.id as idbill','b.*','d.name')
+                                ->join('size_product  as e','c.id_size','=','e.id')
+                                ->select('a.*','b.id as idbill','b.*','d.name','e.size')
+                                ->where([['a.id_bill_export',$id],['b.status',1]])
+                                ->paginate(10);
     	return view('admin.billexport.detailbill',$data);
     }
 

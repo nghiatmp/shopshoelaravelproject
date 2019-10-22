@@ -52,10 +52,10 @@
                     </a>
                     @if(Auth::check())
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i>{{ Auth::user()->fullname }}</a>
+                        <li><a href="{{ route('infor') }}"><i class="fa fa-user fa-fw"></i>{{ Auth::user()->fullname }}</a>
                         </li>
-                        <li><a href="admin/user/edit/{{ Auth::user()->id  }}"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
+                        {{-- <li><a href="admin/user/edit/{{ Auth::user()->id  }}"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        </li> --}}
                         <li class="divider"></li>
                         <li><a href="{{ route('logout') }}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>

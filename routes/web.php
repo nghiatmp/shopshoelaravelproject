@@ -58,6 +58,12 @@ Route::group(['prefix'=>'admin','namespace'=>'admin','middleware'=>'adminlogin']
 
 	});
 
+	Route::group(['prefix'=>'staff'],function(){
+		Route::get('infor','UserController@inforStaff')->name('infor');
+		Route::get('update','UserController@updateStaff')->name('update');
+		Route::post('update','UserController@postupdateStaff')->name('post.update');
+	});
+
 	Route::group(['prefix'=>'billex'],function(){
 		Route::get('list','BillExportController@list')->name('billex-list');
 		Route::get('detailbillex/{id}','BillExportController@detailbillex')->name('detailbillex');
@@ -121,6 +127,13 @@ Route::group(['namespace'=>'page'],function(){
 
 			Route::post('update','PageController@postupdate')->name('page.postupdate');
 		});
+
+
+		//comment
+		Route::group(['middleware'=>'ckeck.user.edit'],function(){
+			Route::post('comment','PageController@comment')->name('page.comment');
+		});
+		
 
 });
 

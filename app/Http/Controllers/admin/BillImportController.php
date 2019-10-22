@@ -17,12 +17,23 @@ use Illuminate\Support\Facades\Auth;
 class BillImportController extends Controller
 {
     public function list(){
-    	$data['billimports'] = DB::table('bill_import as a')->join('supplier as b','a.id_supplier','=','b.id')->join('users as c','a.id_user','=','c.id')->select('a.*','b.name as namesupplier','c.fullname as namestaff')->orderBy('created_at','desc')->paginate(10);
+    	$data['billimports'] = DB::table('bill_import as a')
+                                ->join('supplier as b','a.id_supplier','=','b.id')
+                                ->join('users as c','a.id_user','=','c.id')
+                                ->select('a.*','b.name as namesupplier','c.fullname as namestaff')
+                                ->orderBy('created_at','desc')
+                                ->paginate(10);
     	return view('admin.billimport.list',$data);
     }
 
     public function detailimport($id){
-    	$data['details'] = DB::table('detail_bill_import as a')->join('detail_product as b','a.id_detail_product','=','b.id')->join('size_product as c','b.id_size','=','c.id')->join('product as d','b.id_product','=','d.id')->select('a.*','b.id as id_detail','c.size','d.name as nameproduct','d.id as idproduct')->where('a.id_bill_import',$id)->paginate(10);
+    	$data['details'] = DB::table('detail_bill_import as a')
+                            ->join('detail_product as b','a.id_detail_product','=','b.id')
+                            ->join('size_product as c','b.id_size','=','c.id')
+                            ->join('product as d','b.id_product','=','d.id')
+                            ->select('a.*','b.id as id_detail','c.size','d.name as nameproduct','d.id as idproduct')
+                            ->where('a.id_bill_import',$id)
+                            ->paginate(10);
 
     	return view('admin.billimport.detail-import',$data);
     }

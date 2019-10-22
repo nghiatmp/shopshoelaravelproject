@@ -65,30 +65,33 @@
 			</div>
 	
 			<div class="row mt-5 ml-3">
-				    <div class="col-lg-1">
-						<img src="frontend/images/product/giay.jpg" alt="" width="50px" style="border-radius: 50%">
-					</div>
-				    <div class="col-lg-11">
-						<p>Nghĩa Lê <span style="color:darkgray ">2017-06-16 21:36:24</span></p>
-						<p>giày rất đẹp</p>
-					</div>
-					<div class="col-lg-1">
-						<img src="frontend/images/product/giay.jpg" alt="" width="50px" style="border-radius: 50%">
-					</div>
-				    <div class="col-lg-11">
-						<p>Nghĩa Lê <span style="color:darkgray ">2017-06-16 21:36:24</span></p>
-						<p>cảm ơn shop</p>
-					</div>
-					<div class="col-lg-12 mt-5">
-						<h4 class="">Hãy Để Lại Đánh Gía Của Bạn Về Sản Phẩm </h4>
-						<form class="form-group" style="width:30%">
-							<label for="">Tên Của Bạn</label>
-							<input type="text" name="" class="form-control">
-							<label for="">Nội Dung</label>
-							<textarea name="" class="form-control"></textarea>
-							<button type="submit" class="btn btn-primary mt-3">Bình Luận</button>
-						</form>
-				    </div>
+				  	@foreach($comments as $comment)
+							<div class="col-lg-1">
+								<img src="upload/user/{{ $comment->avatar }}" width="50px" style="border-radius: 50%">
+							</div>
+						    <div class="col-lg-11">
+								<p>{{ $comment->nameUser }} <span style="color:darkgray ">{{ $comment->created_at }}</span></p>
+								<p>{{ $comment->content }}</p>
+							</div>
+
+					@endforeach
+					@if(Auth::check())
+						<div class="col-lg-12 mt-5">
+							<h4 class="">Hãy Để Lại Đánh Gía Của Bạn Về Sản Phẩm </h4>
+							<form class="form-group" style="width:30%" action="{{ route('page.comment') }}" method="POST">
+								@csrf
+								<input type="hidden" name="idpro" value="{{ $product->id }}">
+								<label for="">Tên Của Bạn</label>
+								<input type="text" name="name" class="form-control">
+								<label for="">Nội Dung</label>
+								<textarea name="comment" class="form-control"></textarea>
+								<button type="submit" class="btn btn-primary mt-3">Bình Luận</button>
+							</form>
+					    </div>
+
+					@else
+						<h6 class="mt-5 ml-5">Hãy đăng nhập để có thể bình luận</h6>
+					@endif
 			</div>
 			<h3 class="mt-5 ml-3 mb-5">Sản phẩm liên quan</h3>
 			<div class="row">
