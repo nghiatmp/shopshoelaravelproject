@@ -102,8 +102,8 @@ Route::group(['namespace'=>'page'],function(){
 
 		Route::get('logout','PageController@logout')->name('page.logout');
 		Route::get('contact','PageController@contact')->name('page.contact');
-		Route::get('detailcate/{id}','PageController@detailcate')->name('page.detailcate');
-		Route::get('detailproduct/{id}','PageController@detailproduct')->name('page.detailproduct');
+		Route::get('detailcate/{name}~{id}','PageController@detailcate')->name('page.detailcate');
+		Route::get('detailproduct/{slug}~{id}','PageController@detailproduct')->name('page.detailproduct');
 
 
 		// cart
@@ -133,6 +133,10 @@ Route::group(['namespace'=>'page'],function(){
 		Route::group(['middleware'=>'ckeck.user.edit'],function(){
 			Route::post('comment','PageController@comment')->name('page.comment');
 		});
+
+
+		//SEARCH
+		Route::get('search','PageController@search')->name('page.search');
 		
 
 });

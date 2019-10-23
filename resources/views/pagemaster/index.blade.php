@@ -62,11 +62,15 @@
 				<img width="280" src="frontend/images/slide/logo.png " alt="">
 			</div>
 			<div class="pull-right auto-width-right right">
-				<div class="find" style="display: flex">
-					<input type="text" name="" class="form-control" placeholder="Nhập từ khóa..">
-					<button style="margin-left: 5px" type="submit"><i  class="fa fa-search" aria-hidden="true"></i></button>
-				</div>
-					
+				
+					<form action="{{ route('page.search') }}" method="GET">
+						@csrf
+						<div class="find" style="display: flex">
+							<input type="text" name="key" class="form-control" placeholder="Nhập từ khóa..">
+							<button style="margin-left: 3px" type="submit" class="btn btn-primary">Search</button>
+						</div>
+					</form>
+						
 				<div class="beta-select cart">
 					<a href="{{ route('page.cartshop') }}" title=""><i style="font-size: 30px; margin-right: 5px" class="fa fa-shopping-cart"></i> Giỏ hàng </a>
 				</div>

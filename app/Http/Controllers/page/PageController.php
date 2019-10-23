@@ -29,20 +29,21 @@ class PageController extends Controller
         
         $data['cates'] = Categories::Where([['status',1],['id_parent',0]])->get();
         $data['catechild'] = Categories::Where([['status',1],['id_parent','<>',0]])->get();
-        // if(Auth::check()){
-        //      $iduser = Auth::user()->id;
-        // }else{
-        //      $iduser =-1;
-        // }
-        // $data['carts']=Cart::session($iduser)->getContent();
-        // $data['cartscount']=$data['carts']->count();
-         // dd($data['carts']);
         view::share($data);
     }
     public function index()
     {
         $data['products'] = Product::Where('status',1)->OrderBy('created_at','desc')->paginate(12);
-        $data['sales']=Product::Where([['status',1],['promotion_price','<>',0]])->take(30)->paginate(8);
+        $data['sales']    = Product::Where([['status',1],['promotion_price','<>',0]])->take(8)->get();
+        $data['sells']    = DB::table('detail_bill_export as a')
+                            ->leftjoin('detail_product as b','a.id_detail_product','=','b.id')
+                            ->leftjoin('product as c','b.id_product','=','c.id')
+                            ->select(DB::raw('SUM(a.quanlity) as SL'),'c.*')
+                            ->groupBy('c.id')
+                            ->orderBy('SL','desc')
+                            ->take(8)        
+                            ->get();
+        // dd($data['sell']);
     	return view('pages.index',$data);
     }
 
@@ -98,8 +99,8 @@ class PageController extends Controller
 
 
 
-    public function detailcate($id){
-
+    public function detailcate(Request $request){
+        $id = $request->id;
         $category = Categories::find($id);
 
         if($category->id_parent == 0){
@@ -119,7 +120,8 @@ class PageController extends Controller
          return view('pages.detailcate',$data);
     }
 
-    public function detailproduct($id){
+    public function detailproduct(Request $request){
+        $id = $request->id;
         $data['product'] = Product::find($id); 
         $data['detailproducts'] = DB::table('detail_product')
                                 ->leftjoin('size_product','detail_product.id_size','=','size_product.id')
@@ -400,6 +402,16 @@ class PageController extends Controller
         $comment->save();
 
         return redirect()->route('page.detailproduct',['id'=>$request->idpro])->with('thongbao','Cảm ơn bạn đã để lại bình luận');
+    }
+
+
+    //search
+
+    public function search(Request $request){
+        $key = $request->key;
+        $data['products'] = Product::where('name','like',"%$key%")->paginate(16)->appends(['key'=>$key]);
+        $data['key']     =$key;
+        return view('pages.search',$data);
     }
 
 

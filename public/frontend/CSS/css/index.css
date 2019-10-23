@@ -18,7 +18,10 @@ header .container ul li{
 /* end header--------------------------------- */
 /* logo------------------------------------*/
 .logo .right{
-	margin: 50px 50px;
+	margin: 20px 50px;
+}
+.logo .right input{
+    width: 230px;
 }
 .logo .cart{
 	margin-top: 15px; 
