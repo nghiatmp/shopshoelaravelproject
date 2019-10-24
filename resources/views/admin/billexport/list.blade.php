@@ -17,7 +17,7 @@
                                 <th>Ngày Tạo Hóa Đơn</th>
                                 <th>Tổng Tiền</th>
                                 <th>Chi Tiết Hóa Đơn</th>
-                                <th>Hủy Đơn Hàng</th>
+                                {{-- <th>Hủy Đơn Hàng</th> --}}
                                 
                             </tr>
                         </thead>
@@ -31,10 +31,10 @@
                                 <td>
                                 	<a href="admin/billex/detailbillex/{{ $billex->id }}" title="">Chi Tiết Hóa Đơn</a>
                                 </td>
-                                <td>
+                                {{-- <td>
                                     <button type="submit" class="btn btn-danger">Hủy Đơn Hàng</button>
 
-                                </td>
+                                </td> --}}
                             </tr>
                             @endforeach
                         </tbody>

@@ -6,6 +6,7 @@
 	<div class="content">
 		<div class="container">
 			@include('pagemaster.error')
+			@include('pagemaster.note')
 			<div class="row">
 
 				<div class="col-lg-6">

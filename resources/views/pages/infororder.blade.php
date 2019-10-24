@@ -38,7 +38,7 @@
 		                	<a href="detail-infor-order/{{$billex->id }}">Xem Chi Tiết</a>
 		                </td>
 		                <td >
-		                	<a href="" class="btn btn-danger">Hủy Đơn Hàng</a>
+		                	<a href="{{ route('page.delete-order',['id'=>$billex->id]) }}" class="btn btn-danger" onclick="return confirm('Bạn Có Chắc Chắn Muốn Hủy Đơn Hàng Này Không ??')">Hủy Đơn Hàng</a>
 		                </td>
 		            </tr>
 		        @endforeach

@@ -113,6 +113,7 @@ Route::group(['namespace'=>'page'],function(){
 		Route::get('cartshop','PageController@cartshop')->name('page.cartshop');
 
 		Route::get('deletecart/{id}','PageController@deletecart')->name('page.deletecart');
+		Route::post('updatecart','PageController@updatecart')->name('page.updatecart');
 
 		// giao dien dat hang
 		Route::get('order','PageController@order')->name('page.order');
@@ -146,6 +147,8 @@ Route::group(['namespace'=>'page','middleware'=>'ckeck.user.order'],function(){
 
 		// theo doi don hang
 		Route::get('inforoder/{id}','PageController@inforoder')->name('page.inforoder');
+		Route::get('delete-order/{id}','PageController@deleteOrder')->name('page.delete-order');
+
 		Route::get('detail-infor-order/{id}','PageController@detailinfororder')->name('page.detailinfororder');
 
 });

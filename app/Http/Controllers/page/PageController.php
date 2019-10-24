@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use App\DetailProduct;
 use App\Product;
 use App\Categories;
 use App\Feedback;
@@ -157,6 +158,23 @@ class PageController extends Controller
         $data['billexs'] = BillExport::Where('id_user',$id)->OrderBy('status','asc')->get();
         return view('pages.infororder',$data);
     }
+
+    public function deleteOrder($id,Request $request){
+        $billex = BillExport::find($id);
+        if($billex->status == 1){
+                return redirect()->route('page.inforoder',['id'=>Auth::user()->id])->with('thongbao','Đơn Hàng Của Bạn Đã Được Duyệt');
+        }else{
+             $detailex = DetailBillExport::where('id_bill_export',$id)->get();
+                foreach ($detailex as $k => $v) {
+                    $detailproduct = DetailProduct::find($v->id_detail_product);
+                    $detailproduct->quanlity = $detailproduct->quanlity + $v->quanlity;
+                    $detailproduct->save();
+                    $v->delete();
+                }
+                $billex->delete();
+                return redirect()->route('page.inforoder',['id'=>Auth::user()->id])->with('thongbao','Bạn Đã Hủy Đơn Hàng Thành Công');
+        }
+    }
     public function detailinfororder($id){
         $iduser = Auth::user()->id;
         $data['detailbillex'] = DB::table('detail_bill_export as a')
@@ -216,6 +234,7 @@ class PageController extends Controller
         }
         $data['carts'] = Cart::session($iduser)->getContent();
         $data['Total'] = Cart::session($iduser)->getTotal();
+        // dd($data['carts']);
         return view('pages.cart',$data);
     }
     public function deletecart($id){
@@ -228,6 +247,28 @@ class PageController extends Controller
         return redirect(route('page.cartshop'));
 
 
+    }
+
+    public function updatecart(Request $request){
+        if(Auth::check()){
+             $iduser = Auth::user()->id;
+        }else{
+             $iduser =-1;
+        }
+
+        $idcart = $request->id;
+        $sl =$request->quantity;
+        $update=Cart::session($iduser)->update($idcart, array( 
+              'quantity' => array(
+                  'relative' => false,
+                  'value' => $sl,
+                ),
+            ));
+        if($update){
+            echo "ok";
+        }else{
+            echo "err";
+        }
     }
 
 
@@ -392,7 +433,9 @@ class PageController extends Controller
 
 
     public function comment(StoreComment $request){
-        // dd($request->all());
+        $product = Product::find($request->idpro);
+        $slug = $product->slug;
+
         $comment = new Feedback;
         $comment->id_user    = Auth::user()->id;
         $comment->nameUser   = $request->name;
@@ -401,7 +444,7 @@ class PageController extends Controller
 
         $comment->save();
 
-        return redirect()->route('page.detailproduct',['id'=>$request->idpro])->with('thongbao','Cảm ơn bạn đã để lại bình luận');
+        return redirect()->route('page.detailproduct',['slug'=>$slug,'id'=>$request->idpro])->with('thongbao','Cảm ơn bạn đã để lại bình luận');
     }
 
 

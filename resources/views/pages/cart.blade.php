@@ -31,7 +31,9 @@
 	                <td> {{ $cart['attributes']['size'] }}</td>
 	                <td>
 	                	<a href="deletecart/{{ $cart['id'] }}" title="" class="btn btn-danger"onclick="return confirm('Are you sure');">Xóa</a>
-	                	<a href="" title="" class="btn btn-primary">Sửa</a>
+	                	{{-- <a href="{{ route('page.updatecart',['id'=>$cart['id']]) }}" title="" class="btn btn-primary">Sửa</a> --}}
+	                	<button type="submit" class="btn btn-primary updatecart">Update</button>
+	                	<input type="hidden" name="" value="{{ $cart['id'] }}" class="idcart">
 	                </td>
 	                <td>{{ number_format($cart['price'] ,0 ,'.' ,'.').' Đ' }}</td>
 	                <td>{{ number_format($cart['price']*$cart['quantity'] ,0 ,'.' ,'.').' Đ' }}</td>
@@ -60,5 +62,33 @@
 		</div>
 		</div>
 	</div>
+
+@endsection
+
+@section('script')
+	<script type="text/javascript">
+		$('.updatecart').click(function(){
+			var self = $(this);
+			let id = self.parent().find('input[class=idcart]').val().trim();
+			let quantity = self.parent().prev().prev().find('input[type=number]').val();
+			// alert(id);
+			$.ajax({
+				url   : "{{ route('page.updatecart') }}",
+				type  : "POST",
+				data  : {id:id,quantity:quantity},
+				beforesend: function(){
+					seft.text('Loading..');
+				},
+				success:function(data){
+					if(data ==='err'){
+                              alert('Có Lỗi Xảy ra Vui lòng thử lại');
+                         }else{
+                             	window.location = 'cartshop';
+                              	// alert('update thanh cong');
+                     }
+				}
+			});
+		});
+	</script>
 
 @endsection
