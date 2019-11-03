@@ -134,6 +134,19 @@
                             </ul>
                           
                         </li>
+                        @if(Auth::user()->role == 0)
+                        <li>
+                            <a href="#"><i class="fa fa-area-chart fa-fw"></i> Statistics<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="{{ route('bill-year') }}">Bill Year</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('cateproduct') }}">Cate Product</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
                         <li>
                             <a href="#"><i class="fa fa-users fa-fw"></i> User<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -146,6 +159,8 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
+                        @endif
+                        
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->

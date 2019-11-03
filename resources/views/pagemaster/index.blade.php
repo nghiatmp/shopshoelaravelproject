@@ -66,7 +66,11 @@
 					<form action="{{ route('page.search') }}" method="GET">
 						@csrf
 						<div class="find" style="display: flex">
-							<input type="text" name="key" class="form-control" placeholder="Nhập từ khóa..">
+							<input type="text" name="key" class="form-control" placeholder="Nhập từ khóa.." 
+							@if(isset($key))
+								value="{{ $key }}"
+							@endif 
+							>
 							<button style="margin-left: 3px" type="submit" class="btn btn-primary">Search</button>
 						</div>
 					</form>

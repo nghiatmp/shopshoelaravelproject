@@ -22,6 +22,7 @@ use App\Http\Requests\page\StoreLoginPage;
 use App\Http\Requests\page\StorePostOrderPage;
 use App\Http\Requests\page\StoreUpdateUser;
 use App\Http\Requests\page\StoreComment;
+use Mail;
 
 class PageController extends Controller
 {
@@ -44,7 +45,7 @@ class PageController extends Controller
                             ->orderBy('SL','desc')
                             ->take(8)        
                             ->get();
-        // dd($data['sell']);
+        // dd($data['sells'][2]->id);
     	return view('pages.index',$data);
     }
 
@@ -262,7 +263,7 @@ class PageController extends Controller
               'quantity' => array(
                   'relative' => false,
                   'value' => $sl,
-                ),
+                ), 
             ));
         if($update){
             echo "ok";
@@ -294,12 +295,27 @@ class PageController extends Controller
 
     public function makebill(StoreMakeBill $request)
     {
+        $data['infor']= $request->all();
+        $email = $request->email;
 
         $iduser = Auth::user()->id;
         $carts = Cart::session($iduser)->getContent();
+        $data['carts'] =$carts;
+        // dd($carts);
         $Total = Cart::session($iduser)->getTotal();
+        $data['Total'] = $Total;
 
+        Mail::send('pagemaster.email',$data, function($message) use($email)
+        {
+            $message->from('trieuntgvt3h@gmail.com','Free StyleShop');
 
+            $message->to($email,$email);
+
+            $message->cc('nghiaminhle0801@gmail.com','Le Nghia');
+
+            $message->subject('Xác nhận hóa đơn mua hàng ở Free StyleShop');
+
+        });
         foreach ($carts as $cart) {
            // $id_detail = $cart['id'];
             $product = DB::table('detail_product as a')
@@ -452,9 +468,12 @@ class PageController extends Controller
 
     public function search(Request $request){
         $key = $request->key;
-        $data['products'] = Product::where('name','like',"%$key%")->paginate(16)->appends(['key'=>$key]);
+        $data['products'] = Product::where('name','like',"%$key%")
+                                    ->orwhere('description','like',"%$key%")
+                                    ->paginate(16)->appends(['key'=>$key]);
         $data['key']     =$key;
         return view('pages.search',$data);
+
     }
 
 

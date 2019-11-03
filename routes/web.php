@@ -46,17 +46,7 @@ Route::group(['prefix'=>'admin','namespace'=>'admin','middleware'=>'adminlogin']
 		Route::get('delete/{id}','CategoryController@deletecate')->name('deletecate');
 	});
 
-	Route::group(['prefix'=>'user'],function(){
-		Route::get('list','UserController@list')->name('userlist');
-
-		Route::get('add','UserController@add')->name('useradd');
-		Route::post('add','UserController@postadd')->name('userpostadd');
-
-		Route::get('edit/{id}','UserController@edit')->name('useredit');
-		Route::post('edit/{id}','UserController@postedit')->name('userpostedit');
-		Route::get('delete/{id}','UserController@delete')->name('userdelete');
-
-	});
+	
 
 	Route::group(['prefix'=>'staff'],function(){
 		Route::get('infor','UserController@inforStaff')->name('infor');
@@ -80,8 +70,30 @@ Route::group(['prefix'=>'admin','namespace'=>'admin','middleware'=>'adminlogin']
 		Route::get('add-detail-bill/{id}','BillImportController@adddetail')->name('billim-adddetail');
 		Route::post('add-detail-bill','BillImportController@postdetailaddbill')->name('billim-postadddetail');
 	});
+
+
+	
 	
 });
+
+Route::group(['prefix'=>'admin','namespace'=>'admin','middleware'=>'ckeck.role.admin'],function(){
+	Route::group(['prefix'=>'statistics'],function(){
+		Route::get('bill-year','ThongKeController@BillYear')->name('bill-year');
+		Route::get('category-product','ThongKeController@categoryProduct')->name('cateproduct');
+	});
+	Route::group(['prefix'=>'user'],function(){
+		Route::get('list','UserController@list')->name('userlist');
+
+		Route::get('add','UserController@add')->name('useradd');
+		Route::post('add','UserController@postadd')->name('userpostadd');
+
+		Route::get('edit/{id}','UserController@edit')->name('useredit');
+		Route::post('edit/{id}','UserController@postedit')->name('userpostedit');
+		Route::get('delete/{id}','UserController@delete')->name('userdelete');
+
+	});
+});
+
 
 
 Route::get('admin/login','admin\UserController@login')->name('login');

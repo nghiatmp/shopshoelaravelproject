@@ -18,7 +18,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				@if(isset($carts))
+				{{-- @if(isset($carts)) --}}
 				@foreach($carts as $cart)
 				<tr>
 	                <td>
@@ -40,7 +40,7 @@
 	                
 				</tr>
 				@endforeach
-				@endif
+				{{-- @endif --}}
 			
 			</tbody>
 			<tfoot style="font-size: 20px;">

@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="frontend/CSS/Font/font-awesome-4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="frontend/CSS/css/index.css">
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+	{{-- <link rel="stylesheet" href="https://demos.jquerymobile.com/1.4.2/css/themes/default/jquery.mobile-1.4.2.min.css">  --}}
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 	

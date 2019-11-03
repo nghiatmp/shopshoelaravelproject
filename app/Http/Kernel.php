@@ -63,6 +63,7 @@ class Kernel extends HttpKernel
         'adminlogin'=> \App\Http\Middleware\loginAdminMiddleware::class,
         'ckeck.user.order'=>\App\Http\Middleware\CheckUserOrderMiddleWare::class,
         'ckeck.user.edit'=>\App\Http\Middleware\updateUserMiddleware::class,
+        'ckeck.role.admin'=>\App\Http\Middleware\CheckRoleAdminMiddleware::class,
     ];
 
     /**

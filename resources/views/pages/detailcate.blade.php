@@ -19,7 +19,8 @@
 									<a href="{{ route('page.detailcate',['name'=>$child->name,'id'=>$child->id]) }}" title="">{{"Giày " .$child->name }}  <i class="fa fa-angle-right" aria-hidden="true"></i></a>
 								</li>
 							@endforeach
-					</ul>
+						</ul>
+						
 					</div>
 					
 				</div>
@@ -80,3 +81,4 @@
 	</div>
 
 @endsection
+

@@ -17,7 +17,7 @@
 					<hr>
 					<div style="font-size:20px;display: flex ">
 						@if($product->promotion_price !=0 )
-						<p class="mr-3">{{ number_format($product->unit_price ,0 ,'.' ,'.').' Đ' }}</p> 
+						<p class="mr-3">{{ number_format($product->promotion_price ,0 ,'.' ,'.').' Đ' }}</p> 
 						<p style="text-decoration: line-through; color: #bebebe">{{ number_format($product->unit_price ,0 ,'.' ,'.').' Đ' }}</p>
 						@else
 						<p class="mr-3">{{ number_format($product->unit_price ,0 ,'.' ,'.').' Đ' }}</p> 
@@ -55,7 +55,6 @@
 						    <input type="hidden" name="idpro" value="{{ $product->id }}">
 						    <div class="mt-5">
 								<input type="submit" name="" class="btn btn-primary mb-5" value="Thêm Vào Giỏ Hàng">
-								<input type="submit" name="" class="btn btn-primary" value="Đặt Hàng">
 							</div>								
 						</form>
 						
@@ -90,7 +89,7 @@
 					    </div>
 
 					@else
-						<h6 class="mt-5 ml-5">Hãy đăng nhập để có thể bình luận</h6>
+						<h6 class="mt-5 ml-5"><a href="{{ route('page.getlogin') }}" title="Đăng Nhập">Hãy đăng nhập để có thể bình luận</a></h6>
 					@endif
 			</div>
 			<h3 class="mt-5 ml-3 mb-5">Sản phẩm liên quan</h3>
