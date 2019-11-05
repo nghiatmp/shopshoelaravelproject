@@ -135,7 +135,7 @@ class UserController extends Controller
     public function postlogin(Request $request){
         $validator = Validator::make($request->all(), [
             'email'=>'required|email',
-           'pass'=>'required|min:6|max:10',
+            'pass'=>'required|min:6|max:10',
            
           
         ]);

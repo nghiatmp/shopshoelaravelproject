@@ -28,6 +28,20 @@ class StoreAddDetailBill extends FormRequest
             'product'   => 'required',
             'size'      => 'required',
             'price'     => 'required|numeric',
+            'quantity'  => 'required|numeric',
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'categorty.required'=> 'Xin vui lòng chọn loại sản phẩm',
+            'product.required'  => 'Xin vui lòng chọn sản phẩm',
+            "size.required"     => "Xin vui lòng chọn size giày tương ứng",
+            "price.required"     => "Xin vui lòng nhập giá giày",
+            "price.numeric"     => "Xin vui lòng nhập giá giày là số",
+            "quantity.required"  => "Xin vui lòng nhập số lượng giày",
+            // "quantity.numeric"     => "Xin vui lòng nhập giá giày là số",
+           
         ];
     }
 }

@@ -19,7 +19,7 @@ class ProductController extends Controller
     	$data['product']= DB::table('product as a')
                         ->leftjoin('categories_product as b','a.id_cate','=','b.id')
                         ->select('a.*','b.id as idcate','b.name as catename','b.id_parent')
-                        ->where('a.status',1)->get();
+                        ->where([['a.status',1],['b.status',1]])->get();
     	$data['cate'] = DB::table('categories_product')
                             ->select('id','name')
                             ->where('id_parent',0)

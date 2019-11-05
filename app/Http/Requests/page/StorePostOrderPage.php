@@ -28,4 +28,13 @@ class StorePostOrderPage extends FormRequest
             'size'=>'required',
         ];
     }
+
+     public function messages()
+    {
+        return [
+            'quantity.required' => 'Xin vui lòng chọn số lượng giày bạn muốn mua',
+            'size.required' => 'Xin vui lòng chọn Size giày bạn muốn mua',
+           
+        ];
+    }
 }

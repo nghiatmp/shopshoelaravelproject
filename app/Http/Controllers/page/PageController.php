@@ -305,17 +305,17 @@ class PageController extends Controller
         $Total = Cart::session($iduser)->getTotal();
         $data['Total'] = $Total;
 
-        Mail::send('pagemaster.email',$data, function($message) use($email)
-        {
-            $message->from('trieuntgvt3h@gmail.com','Free StyleShop');
+        // Mail::send('pagemaster.email',$data, function($message) use($email)
+        // {
+        //     $message->from('trieuntgvt3h@gmail.com','Free StyleShop');
 
-            $message->to($email,$email);
+        //     $message->to($email,$email);
 
-            $message->cc('nghiaminhle0801@gmail.com','Le Nghia');
+        //     $message->cc('nghiaminhle0801@gmail.com','Le Nghia');
 
-            $message->subject('Xác nhận hóa đơn mua hàng ở Free StyleShop');
+        //     $message->subject('Xác nhận hóa đơn mua hàng ở Free StyleShop');
 
-        });
+        // });
         foreach ($carts as $cart) {
            // $id_detail = $cart['id'];
             $product = DB::table('detail_product as a')
