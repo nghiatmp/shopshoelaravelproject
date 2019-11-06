@@ -91,7 +91,7 @@ class BillImportController extends Controller
                 //         'price'    => $detailBill->price  + $request->price
                 //     ]);
                 $detailBill->quanlity = $detailBill->quanlity +  $request->quantity;
-                $detailBill->price    = $detailBill->price  + $request->price;
+                // $detailBill->price    = $detailBill->price  + $request->price;
 
                 $detailBill->save();
 

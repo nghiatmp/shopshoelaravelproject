@@ -17,7 +17,6 @@
                                 <th>Ngày Tạo Hóa Đơn</th>
                                 <th>Tổng Tiền</th>
                                 <th>Duyệt Đơn Hàng</th>
-                                <th>Hủy Đơn Hàng</th>
                                 
                             </tr>
                         </thead>
@@ -33,10 +32,7 @@
                                     <input type="hidden" class="id" value="{{ $billex ->id }}">
 
                                 </td>
-                                <td>
-                                    <button type="submit" class="btn btn-danger">Hủy Đơn Hàng</button>
-
-                                </td>
+                               
                             </tr>
                             @endforeach
                         </tbody>

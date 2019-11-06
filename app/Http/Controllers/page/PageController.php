@@ -199,6 +199,7 @@ class PageController extends Controller
                     ->select('a.*','a.id as id_detail','b.size','c.name','c.id as idproduct','c.*')
                     ->where([['a.id_product',$idpro],['a.id_size',$idsize ]])
                     ->first();
+
         if($product->quanlity >= $quantity){
             if(Auth::check()){
              $iduser = Auth::user()->id;
@@ -221,7 +222,7 @@ class PageController extends Controller
             $data['carts'] = Cart::getContent();
             return redirect(route('page.cartshop'));
         }else{
-            return redirect('detailproduct/'.$idpro)->with('thongbao','Sản Phẩm Không Đủ Số Lượng. Xin Giam Số Lượng');
+            return redirect('detailproduct/'.$product->slug.'~'.$idpro)->with('thongbao','Sản Phẩm Không Đủ Số Lượng. Xin Giam Số Lượng');
         }
         
     }

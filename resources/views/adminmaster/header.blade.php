@@ -40,7 +40,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">FreeStyle Shop</a>
+                <a class="navbar-brand" href="{{ route('categorylist') }}">FreeStyle Shop</a>
             </div>
             <!-- /.navbar-header -->
 

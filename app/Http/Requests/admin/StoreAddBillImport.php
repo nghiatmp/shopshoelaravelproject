@@ -30,7 +30,7 @@ class StoreAddBillImport extends FormRequest
 
         ];
     }
-     public function messages()
+    public function messages()
     {
         return [
             'supplier.required'=>'Xin vui lòng chọn nhà cung cấp',

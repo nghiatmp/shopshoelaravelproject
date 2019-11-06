@@ -95,7 +95,7 @@
 							<a href="{{ route('page.detailproduct',['slug'=>$sell->slug,'id'=> $sell->id ]) }}"><img width="270px" height="200px" src="upload/product/{{ $sell->image }}" alt=""></a>
 						</div>
 						<div class="single-item-body">
-							<p class="single-item-title mt-3" style="color: #030303">{{ $sell->name }}</p>
+							<h4 class="single-item-title mt-3" style="color: #030303">{{ $sell->name }}</h4>
 							<p class="single-item-price">
 								@if($sell->promotion_price != 0)
 								<span class="flash-del">{{ number_format($sell->unit_price ,0 ,'.' ,'.').' Đ' }}</span>
@@ -108,11 +108,11 @@
 								@endif
 							</p>
 						</div>
-						<div class="single-item-caption">
+						{{-- <div class="single-item-caption">
 							<a class="add-to-cart pull-left" href="{{ route('page.detailproduct',['slug'=>$sell->slug,'id'=> $sell->id ]) }}"><i class="fa fa-shopping-cart" aria-hidden="true" style="font-size: 50px; margin-left: 5px"></i></a>
 							<a style="background-color: #3A5C83; font-size: 18px; margin-left: 18px;" class="btn btn-success" href="{{ route('page.detailproduct',['slug'=>$sell->slug,'id'=> $sell->id ]) }}"> Details <i style="font-size: 20px; margin-left: 10px;margin-top:6px" class="fa fa-angle-double-right" aria-hidden="true"></i></a>
 							<div class="clearfix"></div>
-						</div>
+						</div> --}}
 							
 					</div>
 				</div>
@@ -138,7 +138,7 @@
 							<a href="{{ route('page.detailproduct',['slug'=>$product->slug,'id'=> $product->id ]) }}"><img width="270px" height="200px" src="upload/product/{{ $product->image }}" alt=""></a>
 						</div>
 						<div class="single-item-body">
-							<p class="single-item-title mt-3" style="color: #030303">{{ $product->name }}</p>
+							<h4 class="single-item-title mt-3" style="color: #030303">{{ $product->name }}</h4>
 							<p class="single-item-price">
 								@if($product->promotion_price != 0)
 								<span class="flash-del">{{ number_format($product->unit_price ,0 ,'.' ,'.').' Đ' }}</span>
@@ -151,11 +151,11 @@
 								@endif
 							</p>
 						</div>
-						<div class="single-item-caption">
+						{{-- <div class="single-item-caption">
 							<a class="add-to-cart pull-left" href="{{ route('page.detailproduct',['slug'=>$product->slug,'id'=> $product->id ]) }}"><i class="fa fa-shopping-cart" aria-hidden="true" style="font-size: 50px; margin-left: 5px"></i></a>
 							<a style="background-color: #3A5C83; font-size: 18px; margin-left: 18px;" class="btn btn-success" href="{{ route('page.detailproduct',['slug'=>$product->slug,'id'=> $product->id ]) }}"> Details <i style="font-size: 20px; margin-left: 10px;margin-top:6px" class="fa fa-angle-double-right" aria-hidden="true"></i></a>
 							<div class="clearfix"></div>
-						</div>
+						</div> --}}
 							
 					</div>
 				</div>
